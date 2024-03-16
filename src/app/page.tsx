@@ -7,6 +7,8 @@ export default function Home() {
   const decimalNumber : number = 257.125;
   const base10Exponent : number = 28;
 
+
+  // for testing
   useEffect(() => {
     console.log("Integer Part Count:");
     console.log(countIntegerPartDigits("123456789.23"))
