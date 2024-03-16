@@ -1,11 +1,36 @@
+"use client"
 import Image from "next/image";
+import { hasFractionalPart, countIntegerPartDigits, countFractionalPartDigits, convertDecimalToBinary } from "@/lib/utils";
+import { useEffect } from "react";
 
 export default function Home() {
+  const decimalNumber : number = 257.125;
+  const base10Exponent : number = 28;
+
+  useEffect(() => {
+    console.log("Integer Part Count:");
+    console.log(countIntegerPartDigits("123456789.23"))
+    console.log("Fractional Part Count:");
+    console.log(countFractionalPartDigits("987.0987"))
+    console.log("Fractional Part Number:");
+    console.log(parseFloat('-0.' + "1234") * 2)
+
+
+  }, []); // empty dependency array means this effect runs once after the first render
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-6xl font-bold underline">Wesly Samson the best!</h1>
-      <Image src="/wesly.jpg" alt="Next.js logo" width={1200} height={1200} />
-      <h2 className="text-4xl font-bold">Binary-64 Floating Point Converter</h2>
+    <div className="flex flex-col">
+      <div>
+        Test
+      </div>
+        
+      <div>
+        <div>
+          Number: {decimalNumber}
+        </div>
+        {convertDecimalToBinary(decimalNumber.toString())}
+      </div>
+        
     </div>
   );
 }
