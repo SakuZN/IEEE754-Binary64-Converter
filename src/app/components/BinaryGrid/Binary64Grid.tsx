@@ -1,6 +1,6 @@
 import React from 'react'
 import {Card, CardContent} from "@/components/ui/card";
-import BitBoxes from "@/app/components/BitBoxes";
+import BitBoxes from "@/app/components/BinaryGrid/BitBoxes";
 const Binary64Grid = () => {
     const signBit = () => {
         let arr = [];

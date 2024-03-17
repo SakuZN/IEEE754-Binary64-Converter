@@ -8,11 +8,12 @@ import { hasFractionalPart,
 
 } from "@/lib/conversion_algorithms";
 import { useEffect } from "react";
-import Binary64Grid from "@/app/components/Binary64Grid";
+import Binary64Grid from "@/app/components/BinaryGrid/Binary64Grid";
+import {InputForm} from "@/app/components/InputForm";
 
 export default function Home() {
   const decimalNumber : number = 255;
-  const base10Exponent : number = 0;
+  const base10Exponent : number = 2;
   const negativeZero: number = -0.0;
 
   let strDecimalNumber: string = "";
@@ -44,7 +45,7 @@ export default function Home() {
   }, []); // empty dependency array means this effect runs once after the first render
 
   return (
-      <div className="flex flex-col">
+      <div className="flex flex-col space-y-5">
         <h1 className="flex justify-center text-5xl font-semibold">
           IEEE 754 Double Precision Converter
         </h1>
@@ -52,6 +53,11 @@ export default function Home() {
         <div className="flex justify-center items-center w-full">
           <Binary64Grid />
         </div>
+
+        <div className="flex justify-center items-center">
+          <InputForm />
+        </div>
+
 
         <div>
           <div>
