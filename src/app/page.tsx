@@ -11,10 +11,19 @@ import { hasFractionalPart,
 import { useEffect } from "react";
 
 export default function Home() {
-  const decimalNumber : number = -0.453125;
-  const base10Exponent : number = -3;
+  const decimalNumber : number = 64;
+  const base10Exponent : number = 0;
+  const negativeZero: number = -0.0;
 
+  let strDecimalNumber: string = "";
 
+  if(Object.is(decimalNumber, -0)){
+    strDecimalNumber = "-0.0";
+  }else if(Object.is(decimalNumber, -0.0)){
+    strDecimalNumber = "-0.0";
+  }else{
+    strDecimalNumber = decimalNumber.toString();
+  }
   
 
   // for testing
@@ -29,6 +38,8 @@ export default function Home() {
     console.log(Math.pow(10, -4) * parseFloat("-11101.010011"));
     console.log("Get Required Base Two Exponent Test:");
     console.log(getRequiredBaseTwoExponent("-1000000"));
+    console.log("NEGATIVE ZERO TEST: ");
+    console.log(Object.is(negativeZero, -0) ? console.log("TRUE") : console.log("FALSE"))
 
   }, []); // empty dependency array means this effect runs once after the first render
 
@@ -44,15 +55,15 @@ export default function Home() {
         </div>
 
         <div>
-          {"Binary form: " + convertDecimalToBinary(decimalNumber.toString(), base10Exponent)}
+          {"Binary form: " + convertDecimalToBinary(strDecimalNumber, base10Exponent)}
         </div>
 
         <div>
-          {"Normalized Binary form: " + normalizeBinaryNumber(convertDecimalToBinary(decimalNumber.toString(), base10Exponent), getRequiredBaseTwoExponent(convertDecimalToBinary(decimalNumber.toString(), base10Exponent)))}
+          {"Normalized Binary form: " + normalizeBinaryNumber(convertDecimalToBinary(strDecimalNumber, base10Exponent), getRequiredBaseTwoExponent(convertDecimalToBinary(decimalNumber.toString(), base10Exponent)))}
         </div>
         
         <div>
-          {"Base Two Exponent: " + getRequiredBaseTwoExponent(convertDecimalToBinary(decimalNumber.toString(), base10Exponent))}
+          {"Base Two Exponent: " + getRequiredBaseTwoExponent(convertDecimalToBinary(strDecimalNumber, base10Exponent))}
         </div>
         
       </div>

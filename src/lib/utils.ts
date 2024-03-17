@@ -42,10 +42,18 @@ export function convertDecimalToBinary(strNum: string, base10Exponent: number): 
   let multipliedStrNum: string = (parseFloat(strNum) * Math.pow(10, base10Exponent)).toString();
 
   // If given is negative
-  if(parseFloat(multipliedStrNum) < 0){
+  if(strNum.charAt(0) === "-" && parseFloat(strNum) < 0){
     multipliedStrNum = multipliedStrNum.substring(1);
     strResult += "-";
+  }else if(parseFloat(multipliedStrNum) === 0){
+    if(strNum.charAt(0) === "-"){
+      return "-0.0";
+    }else{
+      return "0.0";
+    }
+    
   }
+
  
   // split input to integer and fractional parts
   const numberParts = multipliedStrNum.split('.');
@@ -173,10 +181,22 @@ export function getRequiredBaseTwoExponent(strBinaryNum: string): number{
 export function normalizeBinaryNumber(strBinaryNum: string, baseTwoExponent: number): string{
 
   let localStrBinaryNum: string = strBinaryNum;  
+  let signChar: string = ""
 
   // If negative (alternative is if(parseFloat(strBinaryNum) < 0))
   if(localStrBinaryNum.charAt(0) === "-"){
-    localStrBinaryNum = localStrBinaryNum.substring(1);
+    // if given is zero
+    if(parseFloat(localStrBinaryNum) === 0){
+      if(strBinaryNum.charAt(0) === "-"){
+        return "-0.0";
+      }else{
+        return "0.0"
+      }
+    }else{
+      signChar += "-";
+      localStrBinaryNum = localStrBinaryNum.substring(1);
+    }
+    
   }
 
   let numberParts: string[] = localStrBinaryNum.split('.');
@@ -186,16 +206,16 @@ export function normalizeBinaryNumber(strBinaryNum: string, baseTwoExponent: num
     
     // if already normalized and has fractional part (e.g. 1.f)
     if(numberParts[0].charAt(0) === "1" && numberParts.length === 2){
-      return numberParts[0] + "." + numberParts[1];
+      return signChar + numberParts[0] + "." + numberParts[1];
     }else if(numberParts[0].charAt(0) === "1" && numberParts.length === 1){
       // if already normalized and has no fractional part (e.g. 1.0)
-      return numberParts[0] + ".0";
+      return signChar + numberParts[0] + ".0";
     }else if (numberParts.length === 2){
       // if not yet normalized and fractional part has no value(e.g. 0.0)
       if(numberParts[1].length === 1 && numberParts[1].charAt(0) === "0"){
         return "0.0"
       }else if (numberParts[1].length > 1){
-        return numberParts[1].charAt((-1 * baseTwoExponent) - 1) + "." + numberParts[1].substring(-1 * baseTwoExponent);
+        return signChar + numberParts[1].charAt((-1 * baseTwoExponent) - 1) + "." + numberParts[1].substring(-1 * baseTwoExponent);
       }
 
     }else if (numberParts.length === 1){
@@ -210,10 +230,10 @@ export function normalizeBinaryNumber(strBinaryNum: string, baseTwoExponent: num
 
     // if fractional part has value
     if(numberParts.length === 2){
-      return numberParts[0].charAt(0) + "." + numberParts[0].substring(1) + numberParts[1];
+      return signChar + numberParts[0].charAt(0) + "." + numberParts[0].substring(1) + numberParts[1];
     }else if(numberParts.length === 1){
       // if fractional part has no value
-      return numberParts[0].charAt(0) + "." + numberParts[0].substring(1)
+      return signChar + numberParts[0].charAt(0) + "." + numberParts[0].substring(1)
     }
     
   }
