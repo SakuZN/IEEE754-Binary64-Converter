@@ -53,9 +53,6 @@ export default function Home() {
           <Binary64Grid />
         </div>
 
-
-
-
         <div>
           <div>
             Number: {decimalNumber} | Base 10 Exponent: {base10Exponent}

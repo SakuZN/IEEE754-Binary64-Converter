@@ -5,21 +5,21 @@ const Binary64Grid = () => {
     const signBit = () => {
         let arr = [];
         for (let i = 0; i < 1; i++) {
-            arr.push(<BitBoxes bitPosition={i} bitValue={0} color="bg-white"/>);
+            arr.push(<BitBoxes bitPosition={i} bitValue={0}/>);
         }
         return arr;
     }
     const exponentBits = () => {
         let arr = [];
         for (let i = 1; i < 12; i++) {
-            arr.push(<BitBoxes bitPosition={i} bitValue={0} color="bg-white"/>);
+            arr.push(<BitBoxes bitPosition={i} bitValue={1}/>);
         }
         return arr;
     }
     const mantissaBits = () => {
         let arr = [];
-        for (let i = 12; i < 52; i++) {
-            arr.push(<BitBoxes bitPosition={i} bitValue={0} color="bg-white"/>);
+        for (let i = 12; i < 64; i++) {
+            arr.push(<BitBoxes bitPosition={i} bitValue={0}/>);
         }
         return arr;
     }
@@ -34,7 +34,7 @@ const Binary64Grid = () => {
                             </div>
                         </div>
 
-                        <div className="bg-green-200 flex flex-col items-center justify-center p-6">
+                        <div className="bg-blue-100 flex flex-col items-center justify-center p-6">
                             <span className="text-sm font-semibold mb-5">Exponent</span>
                             <div className="flex flex-wrap">
                                 {exponentBits()}
