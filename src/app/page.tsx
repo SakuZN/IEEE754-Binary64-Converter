@@ -1,5 +1,4 @@
 "use client"
-import Image from "next/image";
 import { hasFractionalPart,
   countIntegerPartDigits,
   countFractionalPartDigits,
@@ -7,11 +6,12 @@ import { hasFractionalPart,
   getRequiredBaseTwoExponent,
   normalizeBinaryNumber
 
-} from "@/lib/utils";
+} from "@/lib/conversion_algorithms";
 import { useEffect } from "react";
+import Binary64Grid from "@/app/components/Binary64Grid";
 
 export default function Home() {
-  const decimalNumber : number = 64;
+  const decimalNumber : number = 255;
   const base10Exponent : number = 0;
   const negativeZero: number = -0.0;
 
@@ -44,30 +44,37 @@ export default function Home() {
   }, []); // empty dependency array means this effect runs once after the first render
 
   return (
-    <div className="flex flex-col">
-      <div>
-        Test
-      </div>
-        
-      <div>
-        <div>
-          Number: {decimalNumber} | Base 10 Exponent: { base10Exponent }
+      <div className="flex flex-col">
+        <h1 className="flex justify-center text-5xl font-semibold">
+          IEEE 754 Double Precision Converter
+        </h1>
+
+        <div className="flex justify-center items-center w-full">
+          <Binary64Grid />
         </div>
 
-        <div>
-          {"Binary form: " + convertDecimalToBinary(strDecimalNumber, base10Exponent)}
-        </div>
+
+
 
         <div>
-          {"Normalized Binary form: " + normalizeBinaryNumber(convertDecimalToBinary(strDecimalNumber, base10Exponent), getRequiredBaseTwoExponent(convertDecimalToBinary(decimalNumber.toString(), base10Exponent)))}
+          <div>
+            Number: {decimalNumber} | Base 10 Exponent: {base10Exponent}
+          </div>
+
+          <div>
+            {"Binary form: " + convertDecimalToBinary(strDecimalNumber, base10Exponent)}
+          </div>
+
+          <div>
+            {"Normalized Binary form: " + normalizeBinaryNumber(convertDecimalToBinary(strDecimalNumber, base10Exponent), getRequiredBaseTwoExponent(convertDecimalToBinary(decimalNumber.toString(), base10Exponent)))}
+          </div>
+
+          <div>
+            {"Base Two Exponent: " + getRequiredBaseTwoExponent(convertDecimalToBinary(strDecimalNumber, base10Exponent))}
+          </div>
+
         </div>
-        
-        <div>
-          {"Base Two Exponent: " + getRequiredBaseTwoExponent(convertDecimalToBinary(strDecimalNumber, base10Exponent))}
-        </div>
-        
+
       </div>
-        
-    </div>
   );
 }
