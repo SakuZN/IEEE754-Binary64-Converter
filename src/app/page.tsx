@@ -1,12 +1,21 @@
 "use client"
 import Image from "next/image";
-import { hasFractionalPart, countIntegerPartDigits, countFractionalPartDigits, convertDecimalToBinary } from "@/lib/utils";
+import { hasFractionalPart,
+  countIntegerPartDigits,
+  countFractionalPartDigits,
+  convertDecimalToBinary,
+  getRequiredBaseTwoExponent,
+  normalizeBinaryNumber
+
+} from "@/lib/utils";
 import { useEffect } from "react";
 
 export default function Home() {
-  const decimalNumber : number = -257.125;
-  const base10Exponent : number = -5;
+  const decimalNumber : number = -0.453125;
+  const base10Exponent : number = -3;
 
+
+  
 
   // for testing
   useEffect(() => {
@@ -18,6 +27,8 @@ export default function Home() {
     console.log(parseFloat('-0.' + "1234") * 2)
     console.log("Power Test:");
     console.log(Math.pow(10, -4) * parseFloat("-11101.010011"));
+    console.log("Get Required Base Two Exponent Test:");
+    console.log(getRequiredBaseTwoExponent("-1000000"));
 
   }, []); // empty dependency array means this effect runs once after the first render
 
@@ -31,7 +42,19 @@ export default function Home() {
         <div>
           Number: {decimalNumber} | Base 10 Exponent: { base10Exponent }
         </div>
-        {convertDecimalToBinary(decimalNumber.toString(), base10Exponent)}
+
+        <div>
+          {"Binary form: " + convertDecimalToBinary(decimalNumber.toString(), base10Exponent)}
+        </div>
+
+        <div>
+          {"Normalized Binary form: " + normalizeBinaryNumber(convertDecimalToBinary(decimalNumber.toString(), base10Exponent), getRequiredBaseTwoExponent(convertDecimalToBinary(decimalNumber.toString(), base10Exponent)))}
+        </div>
+        
+        <div>
+          {"Base Two Exponent: " + getRequiredBaseTwoExponent(convertDecimalToBinary(decimalNumber.toString(), base10Exponent))}
+        </div>
+        
       </div>
         
     </div>
