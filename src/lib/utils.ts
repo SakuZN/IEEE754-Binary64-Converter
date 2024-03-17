@@ -33,22 +33,23 @@ export function countFractionalPartDigits(strNum: string): number{
 }
 
 
-export function convertDecimalToBinary(strNum: string): string
+export function convertDecimalToBinary(strNum: string, base10Exponent: number): string
 {
   let integerResult: number[] = [];
   let fractionalResult: number[] = [];
   let strResult: string = ""; 
   let isNegative: boolean = false;
+  let multipliedStrNum: string = (parseFloat(strNum) * Math.pow(10, base10Exponent)).toString();
 
   // If given is negative
-  if(parseFloat(strNum) < 0){
+  if(parseFloat(multipliedStrNum) < 0){
     isNegative = true;
     strResult += "-";
   }
  
 
   // split input to integer and fractional parts
-  const numberParts = strNum.split('.');
+  const numberParts = multipliedStrNum.split('.');
 
   let integerNumber = parseInt(numberParts[0]);
   let fractionalNumber = 0;
@@ -61,30 +62,38 @@ export function convertDecimalToBinary(strNum: string): string
 
 
   // if given decimal number is zero
-  if(parseFloat(strNum) === 0 || parseFloat(strNum) === 0.0){
+  if(parseFloat(multipliedStrNum) === 0 || parseFloat(multipliedStrNum) === 0.0){
     return "";
   }else{
     // Convert integer part to binary
 
-    let quotient: number = Math.abs(integerNumber); // initialize quotient variable
 
-    while(quotient !== 1){
-      integerResult.push(quotient % 2);
-      quotient = Math.floor(quotient / 2);
+    // if strNum multipled by a given base 10 exponent has a non-zero integer part
+
+    if(parseFloat(numberParts[0]) > 0){
+      let quotient: number = Math.abs(integerNumber); // initialize quotient variable
+
+      while(quotient !== 1){
+        integerResult.push(quotient % 2);
+        quotient = Math.floor(quotient / 2);
+      }
+  
+      integerResult.push(quotient);
+  
+      let integerResultLength = integerResult.length;
+      let poppedElement = "";
+  
+      for(let i = 0; i < integerResultLength; i++){
+        poppedElement = integerResult.pop()?.toString() ?? "";
+        console.log(poppedElement);
+        strResult = strResult + (poppedElement);
+      }
+    }else{
+      strResult += "0"
     }
 
-    integerResult.push(quotient);
 
-    let integerResultLength = integerResult.length;
-    let poppedElement = "";
-
-    for(let i = 0; i < integerResultLength; i++){
-      poppedElement = integerResult.pop()?.toString() ?? "";
-      console.log(poppedElement);
-      strResult = strResult + (poppedElement);
-    }
-
-    // if strNum has a fractional part
+    // if strNum multipled by given base 10 exponent has a fractional part
     if(numberParts.length === 2){  
 
       strResult = strResult + "."

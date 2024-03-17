@@ -4,8 +4,8 @@ import { hasFractionalPart, countIntegerPartDigits, countFractionalPartDigits, c
 import { useEffect } from "react";
 
 export default function Home() {
-  const decimalNumber : number = 257.125;
-  const base10Exponent : number = 28;
+  const decimalNumber : number = -257.125;
+  const base10Exponent : number = -5;
 
 
   // for testing
@@ -16,7 +16,8 @@ export default function Home() {
     console.log(countFractionalPartDigits("987.0987"))
     console.log("Fractional Part Number:");
     console.log(parseFloat('-0.' + "1234") * 2)
-
+    console.log("Power Test:");
+    console.log(Math.pow(10, -4) * parseFloat("-11101.010011"));
 
   }, []); // empty dependency array means this effect runs once after the first render
 
@@ -28,9 +29,9 @@ export default function Home() {
         
       <div>
         <div>
-          Number: {decimalNumber}
+          Number: {decimalNumber} | Base 10 Exponent: { base10Exponent }
         </div>
-        {convertDecimalToBinary(decimalNumber.toString())}
+        {convertDecimalToBinary(decimalNumber.toString(), base10Exponent)}
       </div>
         
     </div>
