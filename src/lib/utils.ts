@@ -111,16 +111,80 @@ export function convertDecimalToBinary(strNum: string, base10Exponent: number): 
           strResult = strResult + "0"
         }
       }
-
       console.log("END")
     }
-    
   }
+
+  console.log("STR RESULT: ", strResult)
+
+  // Rounding logic
+  //Positive and the length of the entire string is greater than 52 (exclude the dot)
+    if (strResult.replace(".", "").length > 52 && strResult.charAt(0) !== "-") {
+
+      //if fraction, get substring from 0 to 53 else get substring from 0 to 52
+      let toRound = strResult.includes(".") ? strResult.substring(0, 53) : strResult.substring(0, 52);
+        console.log("TO ROUND: ", toRound.length)
+        let lastBit = strResult.includes(".") ? strResult.charAt(53) : strResult.charAt(52);
+        let secondLastBit = strResult.includes(".") ? strResult.charAt(53) ?? "0" : strResult.charAt(52) ?? "0";
+
+      // If the 53rd bit is 1 and the 54th bit is 1, round up
+      if (lastBit === '1' && secondLastBit === '1') {
+        //TODO: implement rounding up
+      } else {
+        //TODO: implement rounding down
+      }
+      strResult = toRound;
+    }
+    //Negative
+    else if (strResult.replaceAll(/[.-]/g, '').length > 52 && strResult.charAt(0) === "-") {
+      let toRound = strResult.includes(".") ? strResult.substring(0, 54) : strResult.substring(0, 53);
+      let lastBit = strResult.includes(".") ? strResult.charAt(54) : strResult.charAt(53);
+      let secondLastBit = strResult.includes(".") ? strResult.charAt(54) ?? "0" : strResult.charAt(53) ?? "0";
+
+      // If the 53rd bit is 1 and the 54th bit is 1, round up
+      if (lastBit === '1' && secondLastBit === '1') {
+        //TODO: implement rounding up
+      } else {
+        //TODO: implement rounding down
+      }
+        strResult = toRound;
+    }
   
   return strResult;
-
 }
 
+
+export function binaryMantissaToDecimal(binaryString: string, exponent: number) {
+  // Split the binary string into integer and fractional parts
+  const parts = binaryString.split('.');
+  let integerPart = parts[0];
+  const isNegative = integerPart[0] === '-';
+  if (isNegative) {
+    integerPart = integerPart.slice(1);
+  }
+  let fractionalPart = parts.length > 1 ? parts[1] : '';
+
+  // Convert the integer part to decimal
+  let decimal = parseInt(integerPart, 2);
+
+  console.log("DECIMAL: ", decimal)
+
+  // Convert the fractional part to decimal
+  let fractionalDecimal = 0;
+  for (let i = 0; i < fractionalPart.length; i++) {
+    fractionalDecimal += parseInt(fractionalPart[i]) / Math.pow(2, i + 1);
+    console.log("FRACTIONAL DECIMAL: ", fractionalDecimal)
+  }
+  decimal += fractionalDecimal
+
+  // Multiply the result by 2 raised to the power of the exponent
+  decimal *= Math.pow(2, exponent);
+
+  if (isNegative) {
+    decimal *= -1;
+  }
+  return decimal;
+}
 
 export function getRequiredBaseTwoExponent(strBinaryNum: string): number{
 
