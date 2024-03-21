@@ -54,9 +54,7 @@ export default function Home() {
           <Binary64Grid />
         </div>
 
-        <div className="flex justify-center items-center">
           <InputForm />
-        </div>
 
 
         <div>

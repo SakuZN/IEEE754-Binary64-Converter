@@ -53,6 +53,14 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      screens: {
+        mq1350: {
+          raw: "screen and (max-width: 1350px)",
+        },
+        mq600:{
+            raw: "screen and (max-width: 600px)",
+        }
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

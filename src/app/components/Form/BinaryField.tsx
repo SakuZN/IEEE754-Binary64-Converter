@@ -8,15 +8,15 @@ interface Props {
     form: UseFormReturn<z.infer<typeof formSchema>>;
 }
 
-const DecimalField = ({form}: Props) => {
+const BinaryField = ({form}: Props) => {
     return (
         <div className="flex flex-row gap-3 items-end">
             <FormField
                 control={form.control}
-                name="decimal"
+                name="binary"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Decimal</FormLabel>
+                        <FormLabel>Binary Mantissa</FormLabel>
                         <FormControl>
                             <Input {...field} />
                         </FormControl>
@@ -25,11 +25,11 @@ const DecimalField = ({form}: Props) => {
                 )}
             />
             <span className="text-lg font-semibold">
-                x10
+                x2
             </span>
             <FormField
                 control={form.control}
-                name="base10"
+                name="base2"
                 render={({ field }) => (
                     <FormItem>
                         <FormLabel>Exponent</FormLabel>
@@ -43,4 +43,4 @@ const DecimalField = ({form}: Props) => {
         </div>
     )
 }
-export default DecimalField
+export default BinaryField
