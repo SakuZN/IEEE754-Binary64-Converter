@@ -7,7 +7,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOutputFormStore } from "@/app/components/store/conversion_output";
-import { convertDecimalToBinary, convertToBinary64FloatingPoint, getRequiredBaseTwoExponent, normalizeBinaryNumber } from "@/lib/conversion_algorithms";
+import { convertDecimalToBinary } from "@/lib/conversion_algorithms";
 
 export enum InputType {
   Binary = "binary",
@@ -15,9 +15,10 @@ export enum InputType {
 }
 export const formSchema = z
   .object({
-    decimal: z.string().transform(parseFloat).optional(),
-    base10: z
-      .number({ invalid_type_error: "Invalid Decimal value" })
+    decimal: z.string().optional(),
+    base2: z
+      .string()
+      .regex(new RegExp(/^-?[0-9]*$/))
       .optional(),
     binary: z
       .string()
@@ -29,16 +30,16 @@ export const formSchema = z
         message: "'-' can only be at the beginning of the input",
       })
       .optional(),
-    base2: z.coerce
-      .number({ invalid_type_error: "Invalid Decimal value" })
+    base10: z
+      .string()
+      .regex(new RegExp(/^-?[0-9]*$/))
       .optional(),
     inputType: z.enum(["decimal", "binary"]),
   })
   .refine(
     (data) => {
-      console.log(data.inputType === InputType.Decimal);
       if (data.inputType === InputType.Decimal) {
-        return data.decimal !== undefined && data.base10 !== undefined;
+        return data.decimal !== "" && data.base10 !== "";
       } else if (data.inputType === InputType.Binary) {
         return data.binary !== undefined && data.base2 !== undefined;
       }
@@ -53,10 +54,10 @@ const BinaryViz = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      decimal: 0,
-      base10: 0,
+      decimal: "",
+      base10: "",
       binary: "",
-      base2: 0,
+      base2: "",
       inputType: "decimal",
     },
     mode: "onSubmit",
@@ -68,25 +69,19 @@ const BinaryViz = () => {
     (state) => state.setHexRepresentation,
   );
 
-  /*TODO: Use this function for debugging and to check valid input
-  *  Store conversion algorithms in src/lib/conversion_algorithms.ts*/
+  /*TODO: Use this function for debugging and to check valid input*/
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+
     if (values.inputType === InputType.Decimal) {
-        //Insert the conversion algorithm from decimal to binary here
-        var binaryString = convertDecimalToBinary(values.decimal as number, values.base10 as number);
-        var base2Exponent = getRequiredBaseTwoExponent(binaryString);
-        var normalizedBinaryString = normalizeBinaryNumber(binaryString, base2Exponent);
-        var binary64 = convertToBinary64FloatingPoint(normalizedBinaryString, base2Exponent);
-        var hex = parseInt(binary64, 2).toString(16).toUpperCase()
-        setNormalized(normalizedBinaryString);
-        console.log(normalizedBinaryString);
-        setBinary64(binary64);
-        setHexRepresentation(hex);
-        console.log(binary64);
-    }
-    else if (values.inputType === InputType.Binary) {
-        //Insert the conversion algorithm from binary to decimal here
-        console.log(values);
+      const decimal = parseFloat(values.decimal!);
+      const base10 = parseInt(values.base10!);
+      console.log(decimal, base10);
+    } else if (values.inputType === InputType.Binary) {
+      const binary = values.binary!;
+      const base2 = parseInt(values.base2!);
+      console.log(binary, base2);
+      //Insert the conversion algorithm from binary to decimal here
     }
   }
 

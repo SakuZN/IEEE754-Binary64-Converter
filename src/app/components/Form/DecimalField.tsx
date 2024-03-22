@@ -25,13 +25,17 @@ const DecimalField = ({ form }: Props) => {
             <FormLabel>Decimal</FormLabel>
             <div className="flex flex-row items-end gap-2">
               <FormControl>
-                <Input {...field} onChange={(e) => {
+                <Input
+                  {...field}
+                  onChange={(e) => {
                     // Regular expression to check if the input is a valid float number
+
                     const regex = /^-?[0-9]*(\.[0-9]*)?$/;
                     if (regex.test(e.target.value)) {
-                        field.onChange(e.target.value);
+                      field.onChange(e.target.value);
                     }
-                }} />
+                  }}
+                />
               </FormControl>
               <span className="text-lg font-semibold">x10</span>
             </div>
@@ -49,11 +53,12 @@ const DecimalField = ({ form }: Props) => {
               <Input
                 {...field}
                 onChange={(e) => {
-                    // Regular expression to check if the input is a valid integer
-                    const regex = /^-?[0-9]*$/;
-                    if (regex.test(e.target.value)) {
-                        field.onChange(e.target.value);
-                    }
+                  // Regular expression to check if the input is a valid integer
+                  const regex = /^-?[0-9]*$/;
+
+                  if (regex.test(e.target.value)) {
+                    field.onChange(e.target.value);
+                  }
                 }}
               />
             </FormControl>
