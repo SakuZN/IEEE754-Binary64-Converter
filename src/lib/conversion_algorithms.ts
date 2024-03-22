@@ -279,12 +279,10 @@ export function convertToBinary64FloatingPoint(
   let ePrime: number = exponent + 1023;
 
   // 0 Special Case
-  if (strNum === "0.0" || strNum === "-0.0") {
+  if (strNum === "0" || strNum === "-0.0") {
     return (
       (strNum === "-0.0" ? "1" : "0") +
-      " " +
       "00000000000" +
-      " " +
       zeroExtendLeft("0", 52)
     );
   }
@@ -292,9 +290,7 @@ export function convertToBinary64FloatingPoint(
   else if (exponent >= 1023) {
     return (
       (strNum === "-0.0" ? "1" : "0") +
-      " " +
       "11111111111" +
-      " " +
       zeroExtendLeft("0", 52)
     );
   } else if (exponent <= -1022) {

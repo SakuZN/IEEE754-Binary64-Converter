@@ -79,8 +79,10 @@ const BinaryViz = () => {
         var binary64 = convertToBinary64FloatingPoint(normalizedBinaryString, base2Exponent);
         var hex = parseInt(binary64, 2).toString(16).toUpperCase()
         setNormalized(normalizedBinaryString);
+        console.log(normalizedBinaryString);
         setBinary64(binary64);
         setHexRepresentation(hex);
+        console.log(binary64);
     }
     else if (values.inputType === InputType.Binary) {
         //Insert the conversion algorithm from binary to decimal here
