@@ -6,25 +6,50 @@ import OutputCard from "@/app/components/OutputCard";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useOutputFormStore } from "@/app/components/store/conversion_output";
 
-export const formSchema = z.object({
-  decimal: z.coerce
-    .number({ invalid_type_error: "Invalid Decimal value" })
-    .min(Number.MIN_VALUE)
-    .max(Number.MAX_VALUE),
-  base10: z.number(),
-  binary: z
-    .string()
-    .regex(new RegExp("^-?[01]*(\\.[01]*)?$"))
-    .refine((value) => (value.match(/\./g) || []).length <= 1, {
-      message: "Input can only contain one '.' character",
-    })
-    .refine((value) => value.indexOf("-") <= 0, {
-      message: "'-' can only be at the beginning of the input",
-    }),
-  base2: z.number(),
-  inputType: z.enum(["decimal", "binary"]),
-});
+export enum InputType {
+  Binary = "binary",
+  Decimal = "decimal",
+}
+export const formSchema = z
+  .object({
+    decimal: z
+      .number({ invalid_type_error: "Invalid Decimal value" })
+      .max(Number.MAX_VALUE)
+      .optional(),
+    base10: z
+      .number({ invalid_type_error: "Invalid Decimal value" })
+      .optional(),
+    binary: z
+      .string()
+      .regex(new RegExp("^-?[01]*(\\.[01]*)?$"))
+      .refine((value) => (value.match(/\./g) || []).length <= 1, {
+        message: "Input can only contain one '.' character",
+      })
+      .refine((value) => value.indexOf("-") <= 0, {
+        message: "'-' can only be at the beginning of the input",
+      })
+      .optional(),
+    base2: z.coerce
+      .number({ invalid_type_error: "Invalid Decimal value" })
+      .optional(),
+    inputType: z.enum(["decimal", "binary"]),
+  })
+  .refine(
+    (data) => {
+      console.log(data.inputType === InputType.Decimal);
+      if (data.inputType === InputType.Decimal) {
+        return data.decimal !== undefined && data.base10 !== undefined;
+      } else if (data.inputType === InputType.Binary) {
+        return data.binary !== undefined && data.base2 !== undefined;
+      }
+      return false; // Should never reach here
+    },
+    {
+      message: "Required fields are missing based on the input type",
+    },
+  );
 
 const BinaryViz = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -37,7 +62,14 @@ const BinaryViz = () => {
       inputType: "decimal",
     },
     mode: "onSubmit",
+    reValidateMode: "onSubmit",
   });
+  const setBinary64 = useOutputFormStore((state) => state.setBinary64);
+  const setNormalized = useOutputFormStore((state) => state.setNormalized);
+  const setHexRepresentation = useOutputFormStore(
+    (state) => state.setHexRepresentation,
+  );
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }

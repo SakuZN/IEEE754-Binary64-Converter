@@ -16,21 +16,23 @@ interface Props {
 
 const BinaryField = ({ form }: Props) => {
   return (
-    <div className="flex flex-row gap-3 items-end">
+    <div className="flex flex-row gap-3">
       <FormField
         control={form.control}
         name="binary"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Binary Mantissa</FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
+            <div className="flex flex-row items-end gap-2">
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <span className="text-lg font-semibold">x2</span>
+            </div>
             <FormMessage />
           </FormItem>
         )}
       />
-      <span className="text-lg font-semibold">x2</span>
       <FormField
         control={form.control}
         name="base2"
@@ -38,7 +40,16 @@ const BinaryField = ({ form }: Props) => {
           <FormItem>
             <FormLabel>Exponent</FormLabel>
             <FormControl>
-              <Input {...field} className="w-1/2" />
+              <Input
+                {...field}
+                onChange={(e) =>
+                  field.onChange(
+                    e.target.value && e.target.value !== "-"
+                      ? Number(e.target.value)
+                      : e.target.value,
+                  )
+                }
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

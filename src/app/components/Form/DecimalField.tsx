@@ -16,21 +16,32 @@ interface Props {
 
 const DecimalField = ({ form }: Props) => {
   return (
-    <div className="flex flex-row gap-3 items-end">
+    <div className="flex flex-row gap-3">
       <FormField
         control={form.control}
         name="decimal"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Decimal</FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
-            <FormMessage />
+            <div className="flex flex-row items-end gap-2">
+              <FormControl>
+                <Input
+                  {...field}
+                  onChange={(e) =>
+                    field.onChange(
+                      e.target.value && e.target.value !== "-"
+                        ? Number(e.target.value)
+                        : e.target.value,
+                    )
+                  }
+                />
+              </FormControl>
+              <span className="text-lg font-semibold">x10</span>
+            </div>
+            <FormMessage className="text-sm" />
           </FormItem>
         )}
       />
-      <span className="text-lg font-semibold">x10</span>
       <FormField
         control={form.control}
         name="base10"
@@ -38,7 +49,16 @@ const DecimalField = ({ form }: Props) => {
           <FormItem>
             <FormLabel>Exponent</FormLabel>
             <FormControl>
-              <Input {...field} className="w-1/2" />
+              <Input
+                {...field}
+                onChange={(e) =>
+                  field.onChange(
+                    e.target.value && e.target.value !== "-"
+                      ? Number(e.target.value)
+                      : e.target.value,
+                  )
+                }
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

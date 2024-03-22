@@ -1,28 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import BitBoxes from "@/app/components/BinaryGrid/BitBoxes";
+import { useOutputFormStore } from "@/app/components/store/conversion_output";
 const Binary64Grid = () => {
+  const binary64Val = useOutputFormStore((state) => state.binary64);
   const signBit = () => {
     let arr = [];
     for (let i = 0; i < 1; i++) {
-      arr.push(<BitBoxes bitPosition={i} bitValue={0} key={i} />);
+      arr.push(
+        <BitBoxes
+          bitPosition={i}
+          bitValue={parseInt(binary64Val.charAt(i))}
+          key={i}
+        />,
+      );
     }
     return arr;
   };
+
   const exponentBits = () => {
     let arr = [];
     for (let i = 1; i < 12; i++) {
-      arr.push(<BitBoxes bitPosition={i} bitValue={1} key={i} />);
+      arr.push(
+        <BitBoxes
+          bitPosition={i}
+          bitValue={parseInt(binary64Val.charAt(i))}
+          key={i}
+        />,
+      );
     }
     return arr;
   };
+
   const mantissaBits = () => {
     let arr = [];
     for (let i = 12; i < 64; i++) {
-      arr.push(<BitBoxes bitPosition={i} bitValue={0} key={i} />);
+      arr.push(
+        <BitBoxes
+          bitPosition={i}
+          bitValue={parseInt(binary64Val.charAt(i))}
+          key={i}
+        />,
+      );
     }
     return arr;
   };
+
   return (
     <Card className="mt-5 mx-[200px] border mq1350:w-full">
       <CardContent className="p-1">

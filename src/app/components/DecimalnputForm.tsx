@@ -28,16 +28,16 @@ const DecimalnputForm = ({ form, onSubmit }: Props) => {
           Insert decimal input here and see the conversion in real-time.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <CardContent>
             <DecimalField form={form} />
-          </form>
-        </Form>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button type="submit">Submit</Button>
-      </CardFooter>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button type="submit">Submit</Button>
+          </CardFooter>
+        </form>
+      </Form>
     </Card>
   );
 };
