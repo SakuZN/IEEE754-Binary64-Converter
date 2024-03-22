@@ -36,17 +36,12 @@ export function countFractionalPartDigits(strNum: string): number {
 
 export function convertDecimalToBinary(
   num: number,
-  base10Exponents: number,
+  base10Exponent: number,
 ): string {
-  console.log("num :LLLLASASL: " + base10Exponents);
   var strResult = "";
-  var varBase10Exponent = base10Exponents;
-  console.log("num :LLL: " + varBase10Exponent);
-
-  var multiplier = Math.pow(10, varBase10Exponent);
-  var varNum = num * multiplier;
-  var wholeNum = Math.floor(Math.abs(varNum));
-  var fractionNum = Math.abs(varNum) - wholeNum;
+  num = num * Math.pow(10, base10Exponent);
+  var wholeNum = Math.floor(Math.abs(num));
+  var fractionNum = Math.abs(num) - wholeNum;
   var strWhole = "";
   var strFraction = "";
   //Convert whole to binary
@@ -65,18 +60,16 @@ export function convertDecimalToBinary(
 
   //Convert fraction to binary
   while (fractionNum > 0) {
-    console.log(fractionNum);
     fractionNum = fractionNum * 2;
     strFraction = strFraction + Math.floor(fractionNum).toString();
     fractionNum = fractionNum - Math.floor(fractionNum);
   }
 
-  strResult = strWhole + (fractionNum !== 0 ? "." + strFraction : "");
+  strResult = strWhole + (strFraction !== "0" ? "." + strFraction : "");
   if (Object.is(num, -0.0) || num < 0) {
     strResult = "-" + strResult;
   }
 
-  console.log("res " + strResult);
   // Rounding logic
   //Positive and the length of the entire string is greater than 52 (exclude the dot)
   if (strResult.replace(".", "").length > 52 && strResult.charAt(0) !== "-") {
