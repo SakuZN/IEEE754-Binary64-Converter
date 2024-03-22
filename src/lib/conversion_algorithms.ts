@@ -348,9 +348,9 @@ export function convertToBinary64FloatingPoint(
     );
   }
   // Infinity Special Case
-  else if (exponent >= 1023) {
+  else if (exponent > 1023) {
     return (
-      (strNum === "-0.0" ? "1" : "0") + " " +
+      (strNum.charAt(0) === "-" ? "1" : "0") + " " +
       "11111111111" + " " +
       zeroExtendLeft("0", 52)
     );
