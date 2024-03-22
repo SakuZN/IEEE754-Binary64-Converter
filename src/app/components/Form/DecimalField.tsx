@@ -28,11 +28,27 @@ const DecimalField = ({ form }: Props) => {
                 <Input
                   {...field}
                   onChange={(e) => {
-                    // Regular expression to check if the input is a valid float number
+                    let { value } = e.target;
 
-                    const regex = /^-?[0-9]*(\.[0-9]*)?$/;
-                    if (regex.test(e.target.value)) {
-                      field.onChange(e.target.value);
+                    console.log(value);
+
+                    // Check if the current input is "N" or "n", and set the value to "NaN"
+                    if (value.includes("N") || value.includes("n")) {
+                      field.onChange("NaN");
+                    } else if (value.toLowerCase().startsWith("nan")) {
+                      field.onChange("NaN");
+                    } else {
+                      // Handle regular numeric input
+                      const regex = /^-?[0-9]*(\.[0-9]*)?$/;
+                      if (regex.test(value) || value === "") {
+                        field.onChange(value);
+                      }
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    //On backspace and val contains NaN, set the value to empty string
+                    if (e.key === "Backspace" && field.value === "NaN") {
+                      field.onChange("");
                     }
                   }}
                 />

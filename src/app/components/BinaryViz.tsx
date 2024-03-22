@@ -77,6 +77,8 @@ const BinaryViz = () => {
       const decimal = parseFloat(values.decimal!);
       const base10 = parseInt(values.base10!);
       console.log(decimal, base10);
+      //Insert the conversion algorithm from decimal to binary here
+      //console.log(convertDecimalToBinary(decimal, base10));
     } else if (values.inputType === InputType.Binary) {
       const binary = values.binary!;
       const base2 = parseInt(values.base2!);
