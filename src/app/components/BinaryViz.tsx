@@ -7,7 +7,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOutputFormStore } from "@/app/components/store/conversion_output";
-import { convertDecimalToBinary } from "@/lib/conversion_algorithms";
+import { convertDecimalToBinary, convertToBinary64FloatingPoint, getRequiredBaseTwoExponent, normalizeBinaryNumber } from "@/lib/conversion_algorithms";
 
 export enum InputType {
   Binary = "binary",
@@ -73,9 +73,18 @@ const BinaryViz = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.inputType === InputType.Decimal) {
         //Insert the conversion algorithm from decimal to binary here
+        var binaryString = convertDecimalToBinary(values.decimal as number, values.base10 as number);
+        var base2Exponent = getRequiredBaseTwoExponent(binaryString);
+        var normalizedBinaryString = normalizeBinaryNumber(binaryString, base2Exponent);
+        var binary64 = convertToBinary64FloatingPoint(normalizedBinaryString, base2Exponent);
+        var hex = parseInt(binary64, 2).toString(16).toUpperCase()
+        setNormalized(normalizedBinaryString);
+        setBinary64(binary64);
+        setHexRepresentation(hex);
     }
     else if (values.inputType === InputType.Binary) {
         //Insert the conversion algorithm from binary to decimal here
+        console.log(values);
     }
   }
 

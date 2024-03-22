@@ -307,9 +307,7 @@ export function convertToBinary64FloatingPoint(
 
   return (
     signBit +
-    " " +
     zeroExtendLeft(exponentField, 11) +
-    " " +
     zeroExtendRight(significand, 52)
   );
 }
