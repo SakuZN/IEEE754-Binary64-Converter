@@ -30,6 +30,19 @@ export default function RootLayout({
           //disableTransitionOnChange
         >
           {children}
+          <div className="flex flex-col sm:flex-row justify-between bg-gray-black text-white p-2">
+            <div className="footer flex flex-col">
+              <p className="font-semibold">tEST</p>
+              <p className="text-sm mt-2">tEST</p>
+            </div>
+            <a
+              target="_blank"
+              className="text-sm mt-4 hover:underline items-end"
+              href="https://github.com/"
+            >
+              GitHub Repository
+            </a>
+          </div>
         </ThemeProvider>
       </body>
     </html>
