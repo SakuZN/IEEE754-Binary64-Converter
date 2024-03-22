@@ -175,9 +175,7 @@ export function getRequiredBaseTwoExponent(strBinaryNum: string): number {
 
   if(numberParts[0].length > 1){
     if(numberParts[0].charAt(0) === "0"){
-      console.log("HAS LEADING ZEROES IN FUNCTION!");
       numberParts[0] = trimLeadingZeroes(numberParts[0]);
-      console.log("TEST: " + numberParts[0]);
     }
   }
 
@@ -190,8 +188,8 @@ export function getRequiredBaseTwoExponent(strBinaryNum: string): number {
     } else {
       // if only digit integer part is 0, find the next 1 in the fractional part
 
-      // if there is a given fractional part in strBinaryNum
-      if (numberParts.length === 2) {
+      // if there is a given fractional part in strBinaryNum and at least one 1 binary number in it
+      if (numberParts.length === 2 && numberParts[1].includes("1") === true) {
         while (
           numberParts[1].charAt(index) !== "1" &&
           index < numberParts[1].length
@@ -227,6 +225,10 @@ export function normalizeBinaryNumber(
   let localStrBinaryNum: string = strBinaryNum;
   let signChar: string = "";
 
+
+
+
+
   // If negative (alternative is if(parseFloat(strBinaryNum) < 0))
   if (localStrBinaryNum.charAt(0) === "-") {
     // if given is zero
@@ -254,6 +256,10 @@ export function normalizeBinaryNumber(
     console.log("FINAL TRIMMED BINARY INPUT: " + numberParts[0] + "." + numberParts[1]);
   }
 
+
+  if(numberParts[0].includes("1") === false && numberParts[1].includes("1") === false){
+    return signChar + "0.0";
+  }
 
 
   // If integer part only has one digit (either 1 or 0)
@@ -321,15 +327,22 @@ export function convertToBinary64FloatingPoint(
   let exponentField: string = "";
   let significand: string = "";
   let ePrime: number = exponent + 1023;
+  let isNegative: boolean = false;
+  let noSignStrNum: string = "";
 
   let tempStrNumParts: string[] = strNum.split(".");
 
-
+  if(strNum.charAt(0) === "-"){
+    isNegative = true;
+    noSignStrNum = strNum.substring(1);
+  }else{
+    noSignStrNum = strNum;
+  }
 
   // 0 Special Case
-  if (strNum === "0" || strNum === "-0.0") {
+  if (strNum === "0" || (noSignStrNum.charAt(0) === "0" && tempStrNumParts[1].includes("1") === false)){
     return (
-      (strNum === "-0.0" ? "1" : "0") + " " +
+      (strNum.charAt(0) === "-" ? "1" : "0") + " " +
       "00000000000" + " " +
       zeroExtendLeft("0", 52)
     );
