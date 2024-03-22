@@ -25,16 +25,7 @@ const DecimalField = ({ form }: Props) => {
             <FormLabel>Decimal</FormLabel>
             <div className="flex flex-row items-end gap-2">
               <FormControl>
-                <Input
-                  {...field}
-                  onChange={(e) =>
-                    field.onChange(
-                      e.target.value && e.target.value !== "-"
-                        ? Number(e.target.value)
-                        : e.target.value,
-                    )
-                  }
-                />
+                <Input {...field} />
               </FormControl>
               <span className="text-lg font-semibold">x10</span>
             </div>

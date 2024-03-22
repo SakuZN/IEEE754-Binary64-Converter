@@ -7,6 +7,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOutputFormStore } from "@/app/components/store/conversion_output";
+import { convertDecimalToBinary } from "@/lib/conversion_algorithms";
 
 export enum InputType {
   Binary = "binary",
@@ -14,10 +15,7 @@ export enum InputType {
 }
 export const formSchema = z
   .object({
-    decimal: z
-      .number({ invalid_type_error: "Invalid Decimal value" })
-      .max(Number.MAX_VALUE)
-      .optional(),
+    decimal: z.string().transform(parseFloat).optional(),
     base10: z
       .number({ invalid_type_error: "Invalid Decimal value" })
       .optional(),
@@ -72,6 +70,7 @@ const BinaryViz = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    console.log(convertDecimalToBinary(values.decimal!, values.base10!));
   }
 
   return (
