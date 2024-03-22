@@ -2,6 +2,21 @@ export function hasFractionalPart(num: number): boolean {
   return num !== Math.floor(num);
 }
 
+
+export function trimLeadingZeroes(strBinaryNum: string): string{
+
+  let localStrBinaryNum: string = strBinaryNum;
+
+  // While there are leading zeroes and the length of the whole number part is greater than 1
+  while(localStrBinaryNum.charAt(0) === "0" && localStrBinaryNum.length > 1){
+    localStrBinaryNum = localStrBinaryNum.substring(1);
+    console.log("trimLeadingZeroes test: " + localStrBinaryNum);
+  }
+
+  return localStrBinaryNum;
+
+}
+
 export function getFractionalPart(
   num: number,
   decimalPlaces: number = 6,
@@ -158,16 +173,23 @@ export function getRequiredBaseTwoExponent(strBinaryNum: string): number {
   // split input to integer and fractional parts
   let numberParts: string[] = localStrBinaryNum.split(".");
 
+  if(numberParts[0].length > 1){
+    if(numberParts[0].charAt(0) === "0"){
+      numberParts[0] = trimLeadingZeroes(numberParts[0]);
+    }
+  }
+
+
   // If integer part only has one digit (either 1 or 0)
   if (numberParts[0].length === 1) {
     // If only digit in integer part is 1
     if (numberParts[0].charAt(0) === "1") {
       return 0;
     } else {
-      // if only digit ininteger part is 0, find the next 1 in the fractional part
+      // if only digit integer part is 0, find the next 1 in the fractional part
 
-      // if there is a given fractional part in strBinaryNum
-      if (numberParts.length === 2) {
+      // if there is a given fractional part in strBinaryNum and at least one 1 binary number in it
+      if (numberParts.length === 2 && numberParts[1].includes("1") === true) {
         while (
           numberParts[1].charAt(index) !== "1" &&
           index < numberParts[1].length
@@ -188,7 +210,10 @@ export function getRequiredBaseTwoExponent(strBinaryNum: string): number {
       return baseTwoExponent;
     }
   } else {
-    // If integer part has more than one digit
+    // If integer part has more than one non-zero digit
+
+    // if whole number part has leading zeroes
+
     return numberParts[0].length - 1;
   }
 }
@@ -199,6 +224,10 @@ export function normalizeBinaryNumber(
 ): string {
   let localStrBinaryNum: string = strBinaryNum;
   let signChar: string = "";
+
+
+
+
 
   // If negative (alternative is if(parseFloat(strBinaryNum) < 0))
   if (localStrBinaryNum.charAt(0) === "-") {
@@ -217,8 +246,25 @@ export function normalizeBinaryNumber(
 
   let numberParts: string[] = localStrBinaryNum.split(".");
 
+  if(numberParts[0].length > 1){
+    // if whole number part has leading zeroes
+    if(numberParts[0].charAt(0) === "0"){
+      console.log("HAS LEADING ZEROES!");
+      numberParts[0] = trimLeadingZeroes(numberParts[0]);
+    }
+
+    console.log("FINAL TRIMMED BINARY INPUT: " + numberParts[0] + "." + numberParts[1]);
+  }
+
+
+  if(numberParts[0].includes("1") === false && numberParts[1].includes("1") === false){
+    return signChar + "0.0";
+  }
+
+
   // If integer part only has one digit (either 1 or 0)
   if (numberParts[0].length === 1) {
+    
     // if already normalized and has fractional part (e.g. 1.f)
     if (numberParts[0].charAt(0) === "1" && numberParts.length === 2) {
       return signChar + numberParts[0] + "." + numberParts[1];
@@ -233,11 +279,12 @@ export function normalizeBinaryNumber(
         // if not yet normalized and fractional part has value (e.g. 0.1)
         return signChar + numberParts[1].charAt(0) + ".0";
       } else if (numberParts[1].length >= 1) {
+        console.log("should be here again");
         return (
           signChar +
           numberParts[1].charAt(-1 * baseTwoExponent - 1) +
           "." +
-          numberParts[1].substring(-1 * baseTwoExponent)
+          (numberParts[1].length === Math.abs(baseTwoExponent) ? "0" : numberParts[1].substring(-1 * baseTwoExponent))
         );
       }
     } else if (numberParts.length === 1) {
@@ -250,8 +297,11 @@ export function normalizeBinaryNumber(
   } else if (numberParts[0].length > 1) {
     // if integer part has more than one digit
 
+
+
     // if fractional part has value
     if (numberParts.length === 2) {
+      console.log("HERE?");
       return (
         signChar +
         numberParts[0].charAt(0) +
@@ -277,24 +327,46 @@ export function convertToBinary64FloatingPoint(
   let exponentField: string = "";
   let significand: string = "";
   let ePrime: number = exponent + 1023;
+  let isNegative: boolean = false;
+  let noSignStrNum: string = "";
+
+  let tempStrNumParts: string[] = strNum.split(".");
+
+  if(strNum.charAt(0) === "-"){
+    isNegative = true;
+    noSignStrNum = strNum.substring(1);
+  }else{
+    noSignStrNum = strNum;
+  }
 
   // 0 Special Case
-  if (strNum === "0" || strNum === "-0.0") {
+  if (strNum === "0" || (noSignStrNum.charAt(0) === "0" && tempStrNumParts[1].includes("1") === false)){
     return (
-      (strNum === "-0.0" ? "1" : "0") +
-      "00000000000" +
+      (strNum.charAt(0) === "-" ? "1" : "0") + " " +
+      "00000000000" + " " +
       zeroExtendLeft("0", 52)
     );
   }
   // Infinity Special Case
-  else if (exponent >= 1023) {
+  else if (exponent > 1023) {
     return (
-      (strNum === "-0.0" ? "1" : "0") +
-      "11111111111" +
+      (strNum.charAt(0) === "-" ? "1" : "0") + " " +
+      "11111111111" + " " +
       zeroExtendLeft("0", 52)
     );
-  } else if (exponent <= -1022) {
-    return "";
+  } 
+  // Denormalized Special Case
+  else if (exponent < -1022) {
+    let denormalizedString : string = "";
+
+    denormalizedString = zeroExtendLeft("", Math.abs(exponent + 1022) - 1) + 
+    (strNum.charAt(0) === "-" ? tempStrNumParts[0].charAt(1) : tempStrNumParts[0].charAt(0)) +
+    tempStrNumParts[1];
+
+    console.log("DENORMALIZED FRACTIONAL PART: " + denormalizedString);
+
+    return (strNum.charAt(0) === "-" ? "1" : "0") + " 00000000000 " + denormalizedString + zeroExtendRight("", 52 - denormalizedString.length);
+    
   }
 
   exponentField = convertDecimalToBinary(ePrime, 0);
@@ -302,8 +374,8 @@ export function convertToBinary64FloatingPoint(
   signBit = strNum.includes("-") ? "1" : "0";
 
   return (
-    signBit +
-    zeroExtendLeft(exponentField, 11) +
+    signBit + " " +
+    zeroExtendLeft(exponentField, 11) + " " +
     zeroExtendRight(significand, 52)
   );
 }
