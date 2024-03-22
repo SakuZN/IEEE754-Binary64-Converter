@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import Binary64Grid from "@/app/components/BinaryGrid/Binary64Grid";
-import { InputForm } from "@/app/components/InputForm";
-import OutputCard from "@/app/components/OutputCard";
+import { InputForm } from "@/app/components/Form/InputForm";
+import OutputCard from "@/app/components/Form/OutputCard";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -68,9 +68,15 @@ const BinaryViz = () => {
     (state) => state.setHexRepresentation,
   );
 
+  /*TODO: Use this function for debugging and to check valid input
+  *  Store conversion algorithms in src/lib/conversion_algorithms.ts*/
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    console.log(convertDecimalToBinary(values.decimal!, values.base10!));
+    if (values.inputType === InputType.Decimal) {
+        //Insert the conversion algorithm from decimal to binary here
+    }
+    else if (values.inputType === InputType.Binary) {
+        //Insert the conversion algorithm from binary to decimal here
+    }
   }
 
   return (

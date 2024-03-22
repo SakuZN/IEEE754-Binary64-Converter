@@ -25,7 +25,13 @@ const BinaryField = ({ form }: Props) => {
             <FormLabel>Binary Mantissa</FormLabel>
             <div className="flex flex-row items-end gap-2">
               <FormControl>
-                <Input {...field} />
+                <Input {...field} onChange={(e) => {
+                    // Regular expression to check if the input is a valid binary mantissa
+                    const regex = /^-?[01]*(\.[01]*)?$/;
+                    if (regex.test(e.target.value)) {
+                        field.onChange(e.target.value);
+                    }
+                }} />
               </FormControl>
               <span className="text-lg font-semibold">x2</span>
             </div>
@@ -42,13 +48,13 @@ const BinaryField = ({ form }: Props) => {
             <FormControl>
               <Input
                 {...field}
-                onChange={(e) =>
-                  field.onChange(
-                    e.target.value && e.target.value !== "-"
-                      ? Number(e.target.value)
-                      : e.target.value,
-                  )
-                }
+                onChange={(e) => {
+                    // Regular expression to check if the input is a valid integer
+                    const regex = /^-?[0-9]*$/;
+                    if (regex.test(e.target.value)) {
+                        field.onChange(e.target.value);
+                    }
+                }}
               />
             </FormControl>
             <FormMessage />

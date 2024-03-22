@@ -2,8 +2,8 @@ import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import DecimalnputForm from "@/app/components/DecimalnputForm";
-import BinaryInputForm from "@/app/components/BinaryInputForm";
+import DecimalnputForm from "@/app/components/Form/DecimalnputForm";
+import BinaryInputForm from "@/app/components/Form/BinaryInputForm";
 import { formSchema, InputType } from "@/app/components/BinaryViz";
 
 interface Props {
