@@ -24,7 +24,7 @@ const DecimalnputForm = ({ form, onSubmit }: Props) => {
   const outputReset = useOutputFormStore((state) => state.reset);
   function onError() {
     form.setError("inputType", {
-      message: "Required fields are missing",
+      message: "Required fields are missing or have invalid inputs",
     });
   }
   function onReset() {

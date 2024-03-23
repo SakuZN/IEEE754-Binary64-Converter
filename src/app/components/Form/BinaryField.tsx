@@ -32,6 +32,12 @@ const BinaryField = ({ form }: Props) => {
                   onChange={(e) => {
                     // Regular expression to check if the input is a valid binary mantissa
                     const regex = /^-?[01]*(\.[01]*)?$/;
+
+                    // Check if the input starts with a ".", and if so, prevent the input
+                    if (e.target.value.startsWith(".")) {
+                      return;
+                    }
+
                     if (regex.test(e.target.value)) {
                       field.onChange(e.target.value);
                     }

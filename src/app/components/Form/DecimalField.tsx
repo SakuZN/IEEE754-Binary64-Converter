@@ -34,7 +34,15 @@ const DecimalField = ({ form }: Props) => {
 
                     // Check if the current input is "N" or "n", and set the value to "NaN"
                     if (value.includes("N") || value.includes("n")) {
-                      field.onChange("NaN");
+                      // If the input already contains a negative sign, set the value to "-NaN"
+                      if (value.includes("-")) {
+                        field.onChange("-NaN");
+                      } else {
+                        field.onChange("NaN");
+                      }
+                    } else if (value.toLowerCase().startsWith("-nan")) {
+                      // If "-" is added when "NaN" is already in the field, set the value to "-NaN"
+                      field.onChange("-NaN");
                     } else if (value.toLowerCase().startsWith("nan")) {
                       field.onChange("NaN");
                     } else {
@@ -47,7 +55,10 @@ const DecimalField = ({ form }: Props) => {
                   }}
                   onKeyDown={(e) => {
                     //On backspace and val contains NaN, set the value to empty string
-                    if (e.key === "Backspace" && field.value === "NaN") {
+                    if (
+                      e.key === "Backspace" &&
+                      (field.value === "NaN" || field.value === "-NaN")
+                    ) {
                       field.onChange("");
                     }
                   }}

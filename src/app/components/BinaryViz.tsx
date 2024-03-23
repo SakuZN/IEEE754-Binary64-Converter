@@ -43,14 +43,22 @@ export const formSchema = z
   .refine(
     (data) => {
       if (data.inputType === InputType.Decimal) {
-        return data.decimal !== "" && data.base10 !== "";
+        return (
+          data.decimal !== "" &&
+          data.base10 !== "" &&
+          !/^[-.]+$/.test(data.decimal!)
+        );
       } else if (data.inputType === InputType.Binary) {
-        return data.binary !== "" && data.base2 !== "";
+        return (
+          data.binary !== "" &&
+          data.base2 !== "" &&
+          !/^[-.]+$/.test(data.binary!)
+        );
       }
-      return false; // Should never reach here
+      return false;
     },
     {
-      message: `Required fields are missing `,
+      message: `Required fields are missing or have invalid inputs `,
     },
   );
 
@@ -59,9 +67,9 @@ const BinaryViz = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       decimal: "",
-      base10: "",
+      base10: "0",
       binary: "",
-      base2: "",
+      base2: "0",
       inputType: "decimal",
     },
     mode: "onSubmit",
@@ -80,17 +88,19 @@ const BinaryViz = () => {
       const decimal = values.decimal!;
       const base10 = parseInt(values.base10!);
 
-      if (decimal === "0") {
+      if (decimal === "0" || decimal === "-0") {
         //Zero is sign bit 0, exponent all 0, and the mantissa is all 0
-        const zero = "0".padEnd(64, "0");
+        const zero =
+          decimal === "0" ? "0".padEnd(64, "0") : "1".padEnd(64, "0");
         setBinary64(zero);
         setNormalized("0");
         setHexRepresentation("0x0".padEnd(16, "0"));
         setExponent(0);
         return;
-      } else if (decimal === "NaN") {
+      } else if (decimal === "NaN" || decimal === "-NaN") {
         //Nan is sign bit 0, exponent all 1, and the first mantissa bit is 1, rest are 0
-        const NaN = "0" + "1".padEnd(11, "1") + "1".padEnd(52, "0");
+        const signBit = decimal === "NaN" ? "0" : "1";
+        const NaN = signBit + "1".padEnd(11, "1") + "1".padEnd(52, "0");
         setBinary64(NaN);
         setNormalized("Unknown");
         setHexRepresentation(binary64ToHexadecimal(NaN));
