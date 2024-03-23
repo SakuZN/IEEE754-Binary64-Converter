@@ -10,3 +10,8 @@ This project provides a straightforward web-based tool designed to convert decim
 # Project Video Showcase
 https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/0653c405-ecc9-49ce-b516-a880155914da
 
+# Writeup Analysis
+For a more detailed explanation of the project, check the analysis paper below:
+<p>
+</p>
+[CSARCH2 S14 G7 - Simulation Project - Analysis Writeup](https://github.com/SakuZN/IEEE754-Binary64-Converter/files/14731283/CSARCH2.S14.G7.-.Analysis.Writeup.pdf)
