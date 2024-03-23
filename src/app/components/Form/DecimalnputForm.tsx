@@ -71,10 +71,10 @@ const DecimalnputForm = ({ form, onSubmit }: Props) => {
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="ml-1 text-sm text-muted-foreground">
-                    <p>NaN values are supported</p>
-                    <p> Type "S" or "s" for SNaN</p>
-                    <p> Type "Q" or "q" for QNaN</p>
-                    <p> Type "-" to turn it into negative</p>
+                    <p>{"'NaN' values are supported"}</p>
+                    <p>{" Type 'S' or 's' for SNaN"}</p>
+                    <p>{" Type 'Q' or 'q' for QNaN"}</p>
+                    <p>{" Type '-' to turn it into negative"}</p>
                   </div>
                 </TooltipContent>
               </Tooltip>
