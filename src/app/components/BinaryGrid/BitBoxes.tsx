@@ -7,7 +7,7 @@ interface Props {
 
 const BitBoxes = ({ bitPosition, bitValue }: Props) => {
   const color =
-    bitValue === 1 ? "bg-green-100" : bitValue === 0 ? "bg-background" : "";
+    bitValue === 1 ? "bg-green-200" : bitValue === 0 ? "bg-background" : "";
   return (
     <div className="flex flex-col items-center">
       <span className="text-xs font-semibold mb-1">{bitPosition}</span>

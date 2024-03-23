@@ -101,7 +101,7 @@ const BinaryViz = () => {
           decimal,
           base10,
         );
-        setBinary64(output.binary64);
+        setBinary64(output.binary64.substring(0, 64));
         setNormalized(output.normalized);
         setHexRepresentation(output.hexRepresentation);
         setExponent(output.exponent);
@@ -120,7 +120,7 @@ const BinaryViz = () => {
         return;
       } else {
         const output: ConversionOutput = binaryInputToBinary64(binary, base2);
-        setBinary64(output.binary64);
+        setBinary64(output.binary64.substring(0, 64));
         setNormalized(output.normalized);
         setHexRepresentation(output.hexRepresentation);
         setExponent(output.exponent);
