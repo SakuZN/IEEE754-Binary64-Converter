@@ -11,8 +11,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useOutputFormStore } from "@/app/components/store/conversion_output";
+import { UseFormReturn } from "react-hook-form";
+import { z } from "zod";
+import { formSchema } from "@/app/components/BinaryViz";
 
-const OutputCard = () => {
+interface Props {
+  form: UseFormReturn<z.infer<typeof formSchema>>;
+}
+
+const OutputCard = ({ form }: Props) => {
   const binary64 = useOutputFormStore((state) => state.binary64);
   const normalizedBinaryForm = useOutputFormStore((state) => state.normalized);
   const exponent = useOutputFormStore((state) => state.exponent);
@@ -24,11 +31,17 @@ const OutputCard = () => {
 
   const handleDownload = () => {
     const data = `
+    Input ${form.getValues("inputType")}: ${form.getValues("inputType") === "decimal" ? form.getValues("decimal") : form.getValues("binary")}
+    Input exponent: ${form.getValues("inputType") === "decimal" ? form.getValues("base10") : form.getValues("base2")}
+    
     Normalized Binary Form: ${normalizedBinaryForm} x2^${exponent}
     
     E': ${1023 + exponent}
     
     Binary 64 Representation: ${binary64}
+    Sign Bit: ${binary64[0]}
+    Exponent Bits: ${binary64.slice(1, 12)}
+    Mantissa Bits: ${binary64.slice(12)}
     
     Hexadecimal Representation: ${hexRepresentation}`;
 

@@ -64,7 +64,7 @@ const Binary64Grid = () => {
       <CardContent className="p-1">
         <div className="flex flex-row mq1350:flex-col gap-1 ">
           <div className="bg-gray-300 flex flex-col items-center justify-center  p-6">
-            <span className="text-sm font-semibold mb-5">Sign Bit</span>
+            <span className="text-sm font-semibold mb-5">Sign</span>
             <div className="flex flex-wrap">{signBit()}</div>
           </div>
 

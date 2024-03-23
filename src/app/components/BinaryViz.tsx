@@ -133,7 +133,7 @@ const BinaryViz = () => {
       <Binary64Grid />
       <div className="flex flex-row mq1350:flex-col gap-2 justify-center items-center">
         <InputForm form={form} onSubmit={onSubmit} />
-        <OutputCard />
+        <OutputCard form={form} />
       </div>
     </div>
   );
