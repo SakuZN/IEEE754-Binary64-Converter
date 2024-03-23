@@ -13,6 +13,7 @@ import {
 import { Form } from "@/components/ui/form";
 import DecimalField from "@/app/components/Form/DecimalField";
 import { Button } from "@/components/ui/button";
+import CannotBeEmpty from "@/app/components/Form/CannotBeEmpty";
 
 interface Props {
   form: UseFormReturn<z.infer<typeof formSchema>>;
@@ -20,6 +21,11 @@ interface Props {
 }
 
 const DecimalnputForm = ({ form, onSubmit }: Props) => {
+  function onError() {
+    form.setError("inputType", {
+      message: "Required fields are missing",
+    });
+  }
   return (
     <Card className="w-fit">
       <CardHeader>
@@ -29,12 +35,20 @@ const DecimalnputForm = ({ form, onSubmit }: Props) => {
         </CardDescription>
       </CardHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit, onError)}
+          className="space-y-8"
+        >
           <CardContent>
             <DecimalField form={form} />
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button type="submit">Submit</Button>
+            <div className={"flex flex-col gap-1"}>
+              <Button className="w-fit" type="submit">
+                Submit
+              </Button>
+              <CannotBeEmpty form={form} />
+            </div>
           </CardFooter>
         </form>
       </Form>

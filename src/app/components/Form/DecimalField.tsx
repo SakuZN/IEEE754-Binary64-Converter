@@ -22,15 +22,15 @@ const DecimalField = ({ form }: Props) => {
         name="decimal"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Decimal</FormLabel>
+            <FormLabel>
+              Decimal <span className="text-red-500">*</span>
+            </FormLabel>
             <div className="flex flex-row items-end gap-2">
               <FormControl>
                 <Input
                   {...field}
                   onChange={(e) => {
                     let { value } = e.target;
-
-                    console.log(value);
 
                     // Check if the current input is "N" or "n", and set the value to "NaN"
                     if (value.includes("N") || value.includes("n")) {
@@ -64,7 +64,9 @@ const DecimalField = ({ form }: Props) => {
         name="base10"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Exponent</FormLabel>
+            <FormLabel>
+              Exponent <span className="text-red-500">*</span>
+            </FormLabel>
             <FormControl>
               <Input
                 {...field}

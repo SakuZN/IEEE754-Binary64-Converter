@@ -22,7 +22,9 @@ const BinaryField = ({ form }: Props) => {
         name="binary"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Binary Mantissa</FormLabel>
+            <FormLabel>
+              Binary Mantissa <span className="text-red-500">*</span>
+            </FormLabel>
             <div className="flex flex-row items-end gap-2">
               <FormControl>
                 <Input
@@ -47,7 +49,9 @@ const BinaryField = ({ form }: Props) => {
         name="base2"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Exponent</FormLabel>
+            <FormLabel>
+              Exponent <span className="text-red-500">*</span>
+            </FormLabel>
             <FormControl>
               <Input
                 {...field}

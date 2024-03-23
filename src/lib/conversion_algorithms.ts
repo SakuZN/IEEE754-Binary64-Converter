@@ -2,19 +2,16 @@ export function hasFractionalPart(num: number): boolean {
   return num !== Math.floor(num);
 }
 
-
-export function trimLeadingZeroes(strBinaryNum: string): string{
-
+export function trimLeadingZeroes(strBinaryNum: string): string {
   let localStrBinaryNum: string = strBinaryNum;
 
   // While there are leading zeroes and the length of the whole number part is greater than 1
-  while(localStrBinaryNum.charAt(0) === "0" && localStrBinaryNum.length > 1){
+  while (localStrBinaryNum.charAt(0) === "0" && localStrBinaryNum.length > 1) {
     localStrBinaryNum = localStrBinaryNum.substring(1);
     console.log("trimLeadingZeroes test: " + localStrBinaryNum);
   }
 
   return localStrBinaryNum;
-
 }
 
 export function getFractionalPart(
@@ -77,52 +74,6 @@ export function convertDecimalToBinary(
     strResult = "-" + strResult;
   }
 
-  // Rounding logic
-  //Positive and the length of the entire string is greater than 52 (exclude the dot)
-  if (strResult.replace(".", "").length > 52 && strResult.charAt(0) !== "-") {
-    //if fraction, get substring from 0 to 53 else get substring from 0 to 52
-    let toRound = strResult.includes(".")
-      ? strResult.substring(0, 53)
-      : strResult.substring(0, 52);
-    let lastBit = strResult.includes(".")
-      ? strResult.charAt(53)
-      : strResult.charAt(52);
-    let secondLastBit = strResult.includes(".")
-      ? strResult.charAt(53) ?? "0"
-      : strResult.charAt(52) ?? "0";
-
-    // If the 53rd bit is 1 and the 54th bit is 1, round up
-    if (lastBit === "1" && secondLastBit === "1") {
-      //TODO: implement rounding up
-    } else {
-      //TODO: implement rounding down
-    }
-    //strResult = toRound;
-  }
-  //Negative
-  else if (
-    strResult.replaceAll(/[.-]/g, "").length > 52 &&
-    strResult.charAt(0) === "-"
-  ) {
-    let toRound = strResult.includes(".")
-      ? strResult.substring(0, 54)
-      : strResult.substring(0, 53);
-    let lastBit = strResult.includes(".")
-      ? strResult.charAt(54)
-      : strResult.charAt(53);
-    let secondLastBit = strResult.includes(".")
-      ? strResult.charAt(54) ?? "0"
-      : strResult.charAt(53) ?? "0";
-
-    // If the 53rd bit is 1 and the 54th bit is 1, round up
-    if (lastBit === "1" && secondLastBit === "1") {
-      //TODO: implement rounding up
-    } else {
-      //TODO: implement rounding down
-    }
-    //strResult = toRound;
-  }
-
   return strResult;
 }
 
@@ -173,12 +124,11 @@ export function getRequiredBaseTwoExponent(strBinaryNum: string): number {
   // split input to integer and fractional parts
   let numberParts: string[] = localStrBinaryNum.split(".");
 
-  if(numberParts[0].length > 1){
-    if(numberParts[0].charAt(0) === "0"){
+  if (numberParts[0].length > 1) {
+    if (numberParts[0].charAt(0) === "0") {
       numberParts[0] = trimLeadingZeroes(numberParts[0]);
     }
   }
-
 
   // If integer part only has one digit (either 1 or 0)
   if (numberParts[0].length === 1) {
@@ -189,7 +139,7 @@ export function getRequiredBaseTwoExponent(strBinaryNum: string): number {
       // if only digit integer part is 0, find the next 1 in the fractional part
 
       // if there is a given fractional part in strBinaryNum and at least one 1 binary number in it
-      if (numberParts.length === 2 && numberParts[1].includes("1") === true) {
+      if (numberParts.length === 2 && numberParts[1].includes("1")) {
         while (
           numberParts[1].charAt(index) !== "1" &&
           index < numberParts[1].length
@@ -225,10 +175,6 @@ export function normalizeBinaryNumber(
   let localStrBinaryNum: string = strBinaryNum;
   let signChar: string = "";
 
-
-
-
-
   // If negative (alternative is if(parseFloat(strBinaryNum) < 0))
   if (localStrBinaryNum.charAt(0) === "-") {
     // if given is zero
@@ -246,25 +192,24 @@ export function normalizeBinaryNumber(
 
   let numberParts: string[] = localStrBinaryNum.split(".");
 
-  if(numberParts[0].length > 1){
+  if (numberParts[0].length > 1) {
     // if whole number part has leading zeroes
-    if(numberParts[0].charAt(0) === "0"){
+    if (numberParts[0].charAt(0) === "0") {
       console.log("HAS LEADING ZEROES!");
       numberParts[0] = trimLeadingZeroes(numberParts[0]);
     }
 
-    console.log("FINAL TRIMMED BINARY INPUT: " + numberParts[0] + "." + numberParts[1]);
+    console.log(
+      "FINAL TRIMMED BINARY INPUT: " + numberParts[0] + "." + numberParts[1],
+    );
   }
 
-
-  if(numberParts[0].includes("1") === false && numberParts[1].includes("1") === false){
+  if (!numberParts[0].includes("1") && !numberParts[1].includes("1")) {
     return signChar + "0.0";
   }
 
-
   // If integer part only has one digit (either 1 or 0)
   if (numberParts[0].length === 1) {
-    
     // if already normalized and has fractional part (e.g. 1.f)
     if (numberParts[0].charAt(0) === "1" && numberParts.length === 2) {
       return signChar + numberParts[0] + "." + numberParts[1];
@@ -284,7 +229,9 @@ export function normalizeBinaryNumber(
           signChar +
           numberParts[1].charAt(-1 * baseTwoExponent - 1) +
           "." +
-          (numberParts[1].length === Math.abs(baseTwoExponent) ? "0" : numberParts[1].substring(-1 * baseTwoExponent))
+          (numberParts[1].length === Math.abs(baseTwoExponent)
+            ? "0"
+            : numberParts[1].substring(-1 * baseTwoExponent))
         );
       }
     } else if (numberParts.length === 1) {
@@ -296,8 +243,6 @@ export function normalizeBinaryNumber(
     }
   } else if (numberParts[0].length > 1) {
     // if integer part has more than one digit
-
-
 
     // if fractional part has value
     if (numberParts.length === 2) {
@@ -332,41 +277,55 @@ export function convertToBinary64FloatingPoint(
 
   let tempStrNumParts: string[] = strNum.split(".");
 
-  if(strNum.charAt(0) === "-"){
+  if (strNum.charAt(0) === "-") {
     isNegative = true;
     noSignStrNum = strNum.substring(1);
-  }else{
+  } else {
     noSignStrNum = strNum;
   }
 
   // 0 Special Case
-  if (strNum === "0" || (noSignStrNum.charAt(0) === "0" && tempStrNumParts[1].includes("1") === false)){
+  if (
+    strNum === "0" ||
+    (noSignStrNum.charAt(0) === "0" && !tempStrNumParts[1].includes("1"))
+  ) {
     return (
-      (strNum.charAt(0) === "-" ? "1" : "0") + " " +
-      "00000000000" + " " +
+      (strNum.charAt(0) === "-" ? "1" : "0") +
+      " " +
+      "00000000000" +
+      " " +
       zeroExtendLeft("0", 52)
     );
   }
   // Infinity Special Case
   else if (exponent > 1023) {
     return (
-      (strNum.charAt(0) === "-" ? "1" : "0") + " " +
-      "11111111111" + " " +
+      (strNum.charAt(0) === "-" ? "1" : "0") +
+      " " +
+      "11111111111" +
+      " " +
       zeroExtendLeft("0", 52)
     );
-  } 
+  }
   // Denormalized Special Case
   else if (exponent < -1022) {
-    let denormalizedString : string = "";
+    let denormalizedString: string = "";
 
-    denormalizedString = zeroExtendLeft("", Math.abs(exponent + 1022) - 1) + 
-    (strNum.charAt(0) === "-" ? tempStrNumParts[0].charAt(1) : tempStrNumParts[0].charAt(0)) +
-    tempStrNumParts[1];
+    denormalizedString =
+      zeroExtendLeft("", Math.abs(exponent + 1022) - 1) +
+      (strNum.charAt(0) === "-"
+        ? tempStrNumParts[0].charAt(1)
+        : tempStrNumParts[0].charAt(0)) +
+      tempStrNumParts[1];
 
     console.log("DENORMALIZED FRACTIONAL PART: " + denormalizedString);
 
-    return (strNum.charAt(0) === "-" ? "1" : "0") + " 00000000000 " + denormalizedString + zeroExtendRight("", 52 - denormalizedString.length);
-    
+    return (
+      (strNum.charAt(0) === "-" ? "1" : "0") +
+      " 00000000000 " +
+      denormalizedString +
+      zeroExtendRight("", 52 - denormalizedString.length)
+    );
   }
 
   exponentField = convertDecimalToBinary(ePrime, 0);
@@ -374,8 +333,10 @@ export function convertToBinary64FloatingPoint(
   signBit = strNum.includes("-") ? "1" : "0";
 
   return (
-    signBit + " " +
-    zeroExtendLeft(exponentField, 11) + " " +
+    signBit +
+    " " +
+    zeroExtendLeft(exponentField, 11) +
+    " " +
     zeroExtendRight(significand, 52)
   );
 }
