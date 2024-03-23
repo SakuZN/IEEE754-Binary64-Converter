@@ -44,3 +44,33 @@ Interested in the code implementation? Check the code here: [Conversion Algorith
 
 ### Input: $\ SNaN$ Special Case: NaN
 ![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/aec36820-67ba-406a-8b7d-954bb9a5908b)
+
+## Binary Mantissa Input
+### Input: $\ 100.111 x 2^3$ Positive Binary with fraction
+![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/5a01855b-16c2-4176-8658-ba4ffce1f8cb)
+
+
+### Input: $\ 101 x 2^3$ Small Positive Binary
+![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/828e97f0-0318-401f-a828-7b4eb9656b19)
+
+
+### Input: $\ -101 x 2^3$ Small Negative Binary
+![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/86e0233e-87e1-42bf-b095-3d7021f2affc)
+
+
+### Input: $\ -100.111 x 2^3$ Negative Binary with fraction
+![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/2562aa55-70ff-4bed-8b5f-4a2e1a0fd5cf)
+
+
+### Input: $\ 0 x 2^0$ Special Case: Zero
+![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/076c841d-2648-4d07-96f4-79f3f0fa0c10)
+
+
+### Input: $\ 101 x 2^1048$ Special Case: Infinity
+![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/caf1e4da-557e-42fe-957f-893d70ffa4e7)
+
+
+### Input: $\ -1.1110 x 2^-1026$ Special Case: Denormalized
+![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/7cd55061-c5d2-4943-9c4f-4e38e29767c7)
+
+
