@@ -32,33 +32,55 @@ const DecimalField = ({ form }: Props) => {
                   onChange={(e) => {
                     let { value } = e.target;
 
-                    // Check if the current input is "N" or "n", and set the value to "NaN"
-                    if (value.includes("N") || value.includes("n")) {
-                      // If the input already contains a negative sign, set the value to "-NaN"
+                    // Check if the current input is "Q" or "S", and set the value to "QNaN" or "SNaN"
+                    if (value.includes("Q") || value.includes("q")) {
+                      // If the input already contains a negative sign, set the value to "-QNaN"
                       if (value.includes("-")) {
-                        field.onChange("-NaN");
+                        field.onChange("-QNaN");
                       } else {
-                        field.onChange("NaN");
+                        field.onChange("QNaN");
                       }
-                    } else if (value.toLowerCase().startsWith("-nan")) {
-                      // If "-" is added when "NaN" is already in the field, set the value to "-NaN"
-                      field.onChange("-NaN");
-                    } else if (value.toLowerCase().startsWith("nan")) {
-                      field.onChange("NaN");
+                    } else if (value.includes("S") || value.includes("s")) {
+                      // If the input already contains a negative sign, set the value to "-SNaN"
+                      if (value.includes("-")) {
+                        field.onChange("-SNaN");
+                      } else {
+                        field.onChange("SNaN");
+                      }
+                    } else if (
+                      value.toLowerCase().startsWith("-qnan") ||
+                      value.toLowerCase().startsWith("-snan")
+                    ) {
+                      // If "-" is added when "QNaN" or "SNaN" is already in the field, set the value to "-QNaN" or "-SNaN"
+                      field.onChange(value.toUpperCase());
+                    } else if (
+                      value.toLowerCase().startsWith("qnan") ||
+                      value.toLowerCase().startsWith("snan")
+                    ) {
+                      field.onChange(value.toUpperCase());
                     } else {
                       // Handle regular numeric input
                       const regex = /^-?[0-9]*(\.[0-9]*)?$/;
-                      if (regex.test(value) || value === "") {
+
+                      //Extra conditions to prevent 0 from being the first digit of a numeric input
+                      if (value.startsWith("0") && value.length > 1) {
+                        field.onChange(value.slice(1));
+                      } else if (value.startsWith("-0") && value.length > 2) {
+                        field.onChange(`-${value.slice(2)}`);
+                      } else if (
+                        value.startsWith(".") ||
+                        value.startsWith("-.")
+                      ) {
+                        // Check if the input starts with a ".", and if so, prevent the input
+                        return;
+                      } else if (regex.test(value) || value === "") {
                         field.onChange(value);
                       }
                     }
                   }}
                   onKeyDown={(e) => {
                     //On backspace and val contains NaN, set the value to empty string
-                    if (
-                      e.key === "Backspace" &&
-                      (field.value === "NaN" || field.value === "-NaN")
-                    ) {
+                    if (e.key === "Backspace" && field.value!.includes("NaN")) {
                       field.onChange("");
                     }
                   }}

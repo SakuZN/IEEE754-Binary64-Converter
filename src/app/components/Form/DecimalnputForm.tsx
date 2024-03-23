@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
@@ -10,6 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import { Form } from "@/components/ui/form";
 import DecimalField from "@/app/components/Form/DecimalField";
 import { Button } from "@/components/ui/button";
@@ -46,15 +54,38 @@ const DecimalnputForm = ({ form, onSubmit }: Props) => {
         >
           <CardContent>
             <DecimalField form={form} />
+            <CannotBeEmpty form={form} />
           </CardContent>
           <CardFooter className="flex justify-between">
             <div className={"flex flex-col gap-1"}>
               <Button className="w-fit" type="submit">
                 Submit
               </Button>
-              <CannotBeEmpty form={form} />
             </div>
-            <Button variant={"destructive"} onClick={onReset}>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" onClick={(e) => e.preventDefault()}>
+                    Special Values
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="ml-1 text-sm text-muted-foreground">
+                    <p>NaN values are supported</p>
+                    <p> Type "S" or "s" for SNaN</p>
+                    <p> Type "Q" or "q" for QNaN</p>
+                    <p> Type "-" to turn it into negative</p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <Button
+              variant={"destructive"}
+              onClick={(e) => {
+                e.preventDefault();
+                onReset();
+              }}
+            >
               {" "}
               Reset
             </Button>

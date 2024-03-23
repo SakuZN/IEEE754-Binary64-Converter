@@ -47,15 +47,21 @@ const BinaryInputForm = ({ form, onSubmit }: Props) => {
         >
           <CardContent>
             <BinaryField form={form} />
+            <CannotBeEmpty form={form} />
           </CardContent>
           <CardFooter className="flex justify-between">
             <div className={"flex flex-col"}>
               <Button className="w-fit" type="submit">
                 Submit
               </Button>
-              <CannotBeEmpty form={form} />
             </div>
-            <Button variant={"destructive"} onClick={onReset}>
+            <Button
+              variant={"destructive"}
+              onClick={(e) => {
+                e.preventDefault();
+                onReset();
+              }}
+            >
               {" "}
               Reset
             </Button>
