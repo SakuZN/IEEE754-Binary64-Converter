@@ -7,6 +7,14 @@ This project provides a straightforward web-based tool designed to convert decim
   Link to the website: https://ieee-754-binary64-converter.vercel.app/
 </p>
 
+# Table of Contents
+- [Introduction](#ieee-754-binary-64-converter)
+- [Project Video Showcase](#project-video-showcase)
+- [Writeup Analysis and Code Implementation](#writeup-analysis-and-code-implementation)
+- [Test Cases](#test-cases)
+   - [Decimal Input](#decimal-input)
+   - [Binary Mantissa Input](#binary-mantissa-input)
+
 # Project Video Showcase
 https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/0653c405-ecc9-49ce-b516-a880155914da
 
