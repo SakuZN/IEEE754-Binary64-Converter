@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Card,
   CardContent,
@@ -19,6 +19,26 @@ const OutputCard = () => {
   const hexRepresentation = useOutputFormStore(
     (state) => state.hexRepresentation,
   );
+
+  const downloadRef = useRef<HTMLAnchorElement>(null);
+
+  const handleDownload = () => {
+    const data = `
+    Normalized Binary Form: ${normalizedBinaryForm} x2^${exponent}
+    
+    E': ${1023 + exponent}
+    
+    Binary 64 Representation: ${binary64}
+    
+    Hexadecimal Representation: ${hexRepresentation}`;
+
+    const blob = new Blob([data], { type: "text/plain" });
+    if (downloadRef.current) {
+      downloadRef.current.href = URL.createObjectURL(blob);
+      downloadRef.current.download = "binary64_output.txt";
+      downloadRef.current.click();
+    }
+  };
   return (
     <Card className="w-[550px] mq1350:w-[525px] mq600:w-full">
       <CardHeader>
@@ -38,6 +58,9 @@ const OutputCard = () => {
           </div>
         </div>
 
+        <Label htmlFor="EP">E{"'"} (bias 1023)</Label>
+        <Input id={"EP"} disabled value={1023 + exponent} className="h-full" />
+
         <Label htmlFor="BR">Binary 64 Representation</Label>
         <Input id={"BR"} disabled value={binary64} className="h-full" />
 
@@ -45,7 +68,8 @@ const OutputCard = () => {
         <Input id={"Hex"} disabled value={hexRepresentation} />
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button>Download Output</Button>
+        <Button onClick={handleDownload}>Download Output</Button>
+        <a ref={downloadRef} className="hidden" />
       </CardFooter>
     </Card>
   );

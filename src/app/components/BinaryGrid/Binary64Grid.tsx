@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import BitBoxes from "@/app/components/BinaryGrid/BitBoxes";
 import { useOutputFormStore } from "@/app/components/store/conversion_output";
 const Binary64Grid = () => {
   const binary64Val = useOutputFormStore((state) => state.binary64);
+
+  console.log("binary64Val", binary64Val);
   const signBit = () => {
     let arr = [];
     for (let i = 0; i < 1; i++) {
@@ -43,6 +45,7 @@ const Binary64Grid = () => {
   const mantissaBits = () => {
     let arr = [];
     for (let i = 12; i < 64; i++) {
+      console.log(`binary64Val.charAt ${i}:`, binary64Val.charAt(i));
       arr.push(
         <BitBoxes
           bitPosition={i}

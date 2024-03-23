@@ -273,7 +273,7 @@ export function binary64ToHexadecimal(binary64: string): string {
   let hexString: string = "";
   let hexChar: string = "";
 
-  for (let i = 0; i < binary64.length; i += 4) {
+  for (let i = 0; i < 64; i += 4) {
     hexChar = parseInt(binary64.substring(i, i + 4), 2)
       .toString(16)
       .toUpperCase();
