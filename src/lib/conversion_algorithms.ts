@@ -46,35 +46,6 @@ function convertDecimalToBinary(num: number, base10Exponent: number): string {
   return strResult;
 }
 
-`function binaryMantissaToDecimal(binaryString: string, exponent: number) {
-  // Split the binary string into integer and fractional parts
-  const parts = binaryString.split(".");
-  let integerPart = parts[0];
-  const isNegative = integerPart[0] === "-";
-  if (isNegative) {
-    integerPart = integerPart.slice(1);
-  }
-  let fractionalPart = parts.length > 1 ? parts[1] : "";
-
-  // Convert the integer part to decimal
-  let decimal = parseInt(integerPart, 2);
-
-  // Convert the fractional part to decimal
-  let fractionalDecimal = 0;
-  for (let i = 0; i < fractionalPart.length; i++) {
-    fractionalDecimal += parseInt(fractionalPart[i]) / Math.pow(2, i + 1);
-  }
-  decimal += fractionalDecimal;
-
-  // Multiply the result by 2 raised to the power of the exponent
-  decimal *= Math.pow(2, exponent);
-
-  if (isNegative) {
-    decimal *= -1;
-  }
-  return decimal;
-}`;
-
 function getRequiredBaseTwoExponent(strBinaryNum: string): number {
   let index: number = 0;
   let baseTwoExponent: number = 0;
@@ -254,9 +225,7 @@ function convertToBinary64FloatingPoint(strNum: string, exponent: number) {
   ) {
     return (
       (strNum.charAt(0) === "-" ? "1" : "0") +
-      " " +
       "00000000000" +
-      " " +
       zeroExtendLeft("0", 52)
     );
   }
@@ -264,9 +233,7 @@ function convertToBinary64FloatingPoint(strNum: string, exponent: number) {
   else if (exponent > 1023) {
     return (
       (strNum.charAt(0) === "-" ? "1" : "0") +
-      " " +
       "11111111111" +
-      " " +
       zeroExtendLeft("0", 52)
     );
   }
@@ -285,7 +252,7 @@ function convertToBinary64FloatingPoint(strNum: string, exponent: number) {
 
     return (
       (strNum.charAt(0) === "-" ? "1" : "0") +
-      " 00000000000 " +
+      "00000000000" +
       denormalizedString +
       zeroExtendRight("", 52 - denormalizedString.length)
     );
