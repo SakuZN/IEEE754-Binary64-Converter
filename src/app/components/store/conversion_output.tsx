@@ -16,10 +16,10 @@ interface OutputAction {
 }
 
 const initState: OutputState = {
-  binary64: "0".padStart(64, "0"),
+  binary64: "",
   normalized: "",
   exponent: 0,
-  hexRepresentation: "0x0".padEnd(16, "0"),
+  hexRepresentation: "",
 };
 
 export const useOutputFormStore = create<OutputState & OutputAction>(

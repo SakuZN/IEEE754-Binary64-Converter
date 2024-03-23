@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOutputFormStore } from "@/app/components/store/conversion_output";
 import {
+  binary64ToHexadecimal,
   binaryInputToBinary64,
   ConversionOutput,
   decimalInputToBinary64,
@@ -44,7 +45,7 @@ export const formSchema = z
       if (data.inputType === InputType.Decimal) {
         return data.decimal !== "" && data.base10 !== "";
       } else if (data.inputType === InputType.Binary) {
-        return data.decimal !== "" && data.base10 !== "";
+        return data.binary !== "" && data.base2 !== "";
       }
       return false; // Should never reach here
     },
@@ -78,19 +79,52 @@ const BinaryViz = () => {
     if (values.inputType === InputType.Decimal) {
       const decimal = values.decimal!;
       const base10 = parseInt(values.base10!);
-      const output: ConversionOutput = decimalInputToBinary64(decimal, base10);
-      setBinary64(output.binary64);
-      setNormalized(output.normalized);
-      setHexRepresentation(output.hexRepresentation);
-      setExponent(output.exponent);
+
+      if (decimal === "0") {
+        //Zero is sign bit 0, exponent all 0, and the mantissa is all 0
+        const zero = "0".padEnd(64, "0");
+        setBinary64(zero);
+        setNormalized("0");
+        setHexRepresentation("0x0".padEnd(16, "0"));
+        setExponent(0);
+        return;
+      } else if (decimal === "NaN") {
+        //Nan is sign bit 0, exponent all 1, and the first mantissa bit is 1, rest are 0
+        const NaN = "0" + "1".padEnd(11, "1") + "1".padEnd(52, "0");
+        setBinary64(NaN);
+        setNormalized("Unknown");
+        setHexRepresentation(binary64ToHexadecimal(NaN));
+        setExponent(0);
+        return;
+      } else {
+        const output: ConversionOutput = decimalInputToBinary64(
+          decimal,
+          base10,
+        );
+        setBinary64(output.binary64);
+        setNormalized(output.normalized);
+        setHexRepresentation(output.hexRepresentation);
+        setExponent(output.exponent);
+      }
     } else if (values.inputType === InputType.Binary) {
       const binary = values.binary!;
       const base2 = parseInt(values.base2!);
-      const output: ConversionOutput = binaryInputToBinary64(binary, base2);
-      setBinary64(output.binary64);
-      setNormalized(output.normalized);
-      setHexRepresentation(output.hexRepresentation);
-      setExponent(output.exponent);
+
+      if (!binary.includes("1")) {
+        //Zero is sign bit 0, exponent all 0, and the mantissa is all 0
+        const zero = "0".padEnd(64, "0");
+        setBinary64(zero);
+        setNormalized("0");
+        setHexRepresentation("0x0".padEnd(16, "0"));
+        setExponent(0);
+        return;
+      } else {
+        const output: ConversionOutput = binaryInputToBinary64(binary, base2);
+        setBinary64(output.binary64);
+        setNormalized(output.normalized);
+        setHexRepresentation(output.hexRepresentation);
+        setExponent(output.exponent);
+      }
     }
   }
 

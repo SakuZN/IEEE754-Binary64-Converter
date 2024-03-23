@@ -269,7 +269,7 @@ function convertToBinary64FloatingPoint(strNum: string, exponent: number) {
   );
 }
 
-function binary64ToHexadecimal(binary64: string): string {
+export function binary64ToHexadecimal(binary64: string): string {
   let hexString: string = "";
   let hexChar: string = "";
 

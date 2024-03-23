@@ -10,7 +10,11 @@ const Binary64Grid = () => {
       arr.push(
         <BitBoxes
           bitPosition={i}
-          bitValue={parseInt(binary64Val.charAt(i))}
+          bitValue={
+            isNaN(parseInt(binary64Val.charAt(i)))
+              ? ""
+              : parseInt(binary64Val.charAt(i))
+          }
           key={i}
         />,
       );
@@ -24,7 +28,11 @@ const Binary64Grid = () => {
       arr.push(
         <BitBoxes
           bitPosition={i}
-          bitValue={parseInt(binary64Val.charAt(i))}
+          bitValue={
+            isNaN(parseInt(binary64Val.charAt(i)))
+              ? ""
+              : parseInt(binary64Val.charAt(i))
+          }
           key={i}
         />,
       );
@@ -38,7 +46,11 @@ const Binary64Grid = () => {
       arr.push(
         <BitBoxes
           bitPosition={i}
-          bitValue={parseInt(binary64Val.charAt(i))}
+          bitValue={
+            isNaN(parseInt(binary64Val.charAt(i)))
+              ? ""
+              : parseInt(binary64Val.charAt(i))
+          }
           key={i}
         />,
       );
