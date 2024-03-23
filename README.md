@@ -41,10 +41,10 @@ Interested in the code implementation? Check the code here: [Conversion Algorith
 ### Input: $\ 0 x 10^0$ Special Case: Zero
 ![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/86375f9e-20ca-41b1-8dc3-87699c4a59e2)
 
-### Input: $\ -1.0 x 10^323$ Special Case: Infinity
+### Input: $\ -1.0 x 10^{323}$ Special Case: Infinity
 ![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/4a68e842-3ebf-4539-960b-20897b38f367)
 
-### Input: $\ 1.0 x 10^-323$ Special Case: Denormalized
+### Input: $\ 1.0 x 10^{-323}$ Special Case: Denormalized
 ![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/dde913a6-ddd0-429b-99e4-a8cccb59cb77)
 
 ### Input: $\ QNaN$ Special Case: NaN
@@ -74,11 +74,11 @@ Interested in the code implementation? Check the code here: [Conversion Algorith
 ![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/076c841d-2648-4d07-96f4-79f3f0fa0c10)
 
 
-### Input: $\ 101 x 2^1048$ Special Case: Infinity
+### Input: $\ 101 x 2^{1048}$ Special Case: Infinity
 ![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/caf1e4da-557e-42fe-957f-893d70ffa4e7)
 
 
-### Input: $\ -1.1110 x 2^-1026$ Special Case: Denormalized
+### Input: $\ -1.1110 x 2^{-1026}$ Special Case: Denormalized
 ![image](https://github.com/SakuZN/IEEE754-Binary64-Converter/assets/106810417/7cd55061-c5d2-4943-9c4f-4e38e29767c7)
 
 
