@@ -1,47 +1,16 @@
-export function hasFractionalPart(num: number): boolean {
-  return num !== Math.floor(num);
-}
+import {
+  trimLeadingZeroes,
+  zeroExtendLeft,
+  zeroExtendRight,
+} from "./conversion_helpers";
+export type ConversionOutput = {
+  normalized: string;
+  exponent: number;
+  binary64: string;
+  hexRepresentation: string;
+};
 
-export function trimLeadingZeroes(strBinaryNum: string): string {
-  let localStrBinaryNum: string = strBinaryNum;
-
-  // While there are leading zeroes and the length of the whole number part is greater than 1
-  while (localStrBinaryNum.charAt(0) === "0" && localStrBinaryNum.length > 1) {
-    localStrBinaryNum = localStrBinaryNum.substring(1);
-    console.log("trimLeadingZeroes test: " + localStrBinaryNum);
-  }
-
-  return localStrBinaryNum;
-}
-
-export function getFractionalPart(
-  num: number,
-  decimalPlaces: number = 6,
-): number {
-  const factor = Math.pow(10, decimalPlaces);
-  return Math.round((num - Math.floor(num)) * factor) / factor;
-}
-
-export function countIntegerPartDigits(strNum: string): number {
-  const array = strNum.split(".");
-
-  return array[0].length;
-}
-
-export function countFractionalPartDigits(strNum: string): number {
-  const array = strNum.split(".");
-
-  if (array.length === 2) {
-    return array[1].length; // If number has a fractional part
-  } else {
-    return 0; // if number has no fractional part
-  }
-}
-
-export function convertDecimalToBinary(
-  num: number,
-  base10Exponent: number,
-): string {
+function convertDecimalToBinary(num: number, base10Exponent: number): string {
   var strResult = "";
   num = num * Math.pow(10, base10Exponent);
   var wholeNum = Math.floor(Math.abs(num));
@@ -77,10 +46,7 @@ export function convertDecimalToBinary(
   return strResult;
 }
 
-export function binaryMantissaToDecimal(
-  binaryString: string,
-  exponent: number,
-) {
+`function binaryMantissaToDecimal(binaryString: string, exponent: number) {
   // Split the binary string into integer and fractional parts
   const parts = binaryString.split(".");
   let integerPart = parts[0];
@@ -107,9 +73,9 @@ export function binaryMantissaToDecimal(
     decimal *= -1;
   }
   return decimal;
-}
+}`;
 
-export function getRequiredBaseTwoExponent(strBinaryNum: string): number {
+function getRequiredBaseTwoExponent(strBinaryNum: string): number {
   let index: number = 0;
   let baseTwoExponent: number = 0;
   let isNegative: boolean = false;
@@ -168,7 +134,7 @@ export function getRequiredBaseTwoExponent(strBinaryNum: string): number {
   }
 }
 
-export function normalizeBinaryNumber(
+function normalizeBinaryNumber(
   strBinaryNum: string,
   baseTwoExponent: number,
 ): string {
@@ -264,10 +230,7 @@ export function normalizeBinaryNumber(
   return ""; // for typescript error prevention
 }
 
-export function convertToBinary64FloatingPoint(
-  strNum: string,
-  exponent: number,
-) {
+function convertToBinary64FloatingPoint(strNum: string, exponent: number) {
   let signBit: string = "";
   let exponentField: string = "";
   let significand: string = "";
@@ -334,29 +297,84 @@ export function convertToBinary64FloatingPoint(
 
   return (
     signBit +
-    " " +
     zeroExtendLeft(exponentField, 11) +
-    " " +
     zeroExtendRight(significand, 52)
   );
 }
 
-export function zeroExtendLeft(strNum: string, numBits: number): string {
-  let result: string = strNum;
+function binary64ToHexadecimal(binary64: string): string {
+  let hexString: string = "";
+  let hexChar: string = "";
 
-  for (let i = 0; i < numBits - strNum.length; i++) {
-    result = "0" + result;
+  for (let i = 0; i < binary64.length; i += 4) {
+    hexChar = parseInt(binary64.substring(i, i + 4), 2)
+      .toString(16)
+      .toUpperCase();
+    hexString += hexChar;
   }
 
-  return result;
+  return `0x${hexString}`;
 }
 
-export function zeroExtendRight(strNum: string, numBits: number): string {
-  let result: string = strNum;
+export function decimalInputToBinary64(
+  strNum: string,
+  base10Exponent: number,
+): ConversionOutput {
+  //Get the binary form of the given decimal number
+  const binaryNum = convertDecimalToBinary(parseFloat(strNum), base10Exponent);
 
-  for (let i = 0; i < numBits - strNum.length; i++) {
-    result = result + "0";
-  }
+  //Get the required base two exponent
+  const baseTwoExponent = getRequiredBaseTwoExponent(binaryNum);
 
-  return result;
+  //Get the normalized binary number
+  const normalizedBinary = normalizeBinaryNumber(binaryNum, baseTwoExponent);
+
+  //Get the binary64 representation
+  const binary64 = convertToBinary64FloatingPoint(
+    normalizedBinary,
+    baseTwoExponent,
+  );
+
+  //Finally, get the hexadecimal representation
+  const hexRepresentation = binary64ToHexadecimal(binary64);
+
+  return {
+    normalized: normalizedBinary,
+    exponent: baseTwoExponent,
+    binary64: binary64,
+    hexRepresentation: hexRepresentation,
+  };
+}
+
+export function binaryInputToBinary64(
+  binaryString: string,
+  exponent: number,
+): ConversionOutput {
+  //Get the required base two exponent
+  const requiredBaseTwoExponent = getRequiredBaseTwoExponent(binaryString);
+
+  //Get the normalized binary number
+  const normalizedBinary = normalizeBinaryNumber(
+    binaryString,
+    requiredBaseTwoExponent,
+  );
+
+  //Get the final base two exponent
+  const finalBaseTwoExponent = requiredBaseTwoExponent + exponent;
+
+  //Get the binary64 representation
+  const binary64 = convertToBinary64FloatingPoint(
+    normalizedBinary,
+    finalBaseTwoExponent,
+  );
+
+  //Finally, get the hexadecimal representation
+  const hexRepresentation = binary64ToHexadecimal(binary64);
+
+  return {
+    normalized: normalizedBinary,
+    exponent: finalBaseTwoExponent,
+    binary64: binary64,
+    hexRepresentation: hexRepresentation,
+  };
 }

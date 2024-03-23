@@ -8,12 +8,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOutputFormStore } from "@/app/components/store/conversion_output";
 import {
-  normalizeBinaryNumber,
-  getRequiredBaseTwoExponent,
-  convertDecimalToBinary,
-  convertToBinary64FloatingPoint,
+  binaryInputToBinary64,
+  ConversionOutput,
+  decimalInputToBinary64,
 } from "@/lib/conversion_algorithms";
-
 export enum InputType {
   Binary = "binary",
   Decimal = "decimal",
@@ -73,42 +71,26 @@ const BinaryViz = () => {
   const setHexRepresentation = useOutputFormStore(
     (state) => state.setHexRepresentation,
   );
+  const setExponent = useOutputFormStore((state) => state.setExponent);
 
   /*TODO: Use this function for debugging and to check valid input*/
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-
     if (values.inputType === InputType.Decimal) {
-      const decimal = parseFloat(values.decimal!);
+      const decimal = values.decimal!;
       const base10 = parseInt(values.base10!);
-      //Insert the conversion algorithm from decimal to binary here
-      //console.log(convertDecimalToBinary(decimal, base10));
+      const output: ConversionOutput = decimalInputToBinary64(decimal, base10);
+      setBinary64(output.binary64);
+      setNormalized(output.normalized);
+      setHexRepresentation(output.hexRepresentation);
+      setExponent(output.exponent);
     } else if (values.inputType === InputType.Binary) {
       const binary = values.binary!;
       const base2 = parseInt(values.base2!);
-      //Insert the conversion algorithm from binary to decimal here
-
-      const requiredBaseTwoExponent: number =
-        getRequiredBaseTwoExponent(binary);
-      const normalizedBinaryString = normalizeBinaryNumber(
-        binary,
-        requiredBaseTwoExponent,
-      );
-
-      console.log("Original Base Two Exponent: " + base2);
-      console.log("Required Base Two Exponent: " + requiredBaseTwoExponent);
-      console.log("Normalized Binary Str: " + normalizedBinaryString);
-
-      let finalBaseTwoExponent: number = base2 + requiredBaseTwoExponent;
-      console.log("Final Base Two Exponent: " + finalBaseTwoExponent);
-
-      console.log(
-        "Final Binary64 Conversion: " +
-          convertToBinary64FloatingPoint(
-            normalizedBinaryString,
-            finalBaseTwoExponent,
-          ),
-      );
+      const output: ConversionOutput = binaryInputToBinary64(binary, base2);
+      setBinary64(output.binary64);
+      setNormalized(output.normalized);
+      setHexRepresentation(output.hexRepresentation);
+      setExponent(output.exponent);
     }
   }
 
