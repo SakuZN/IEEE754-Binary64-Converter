@@ -112,6 +112,25 @@ const BinaryViz = () => {
         setExponent(0);
         return;
       } else {
+        if (base10 > 52) {
+          //If the number is too large, it will be infinity
+          const signBit = decimal.charAt(0) === "-" ? "1" : "0";
+          const infinity = signBit + "11111111111" + "0".padEnd(52, "0");
+          setBinary64(infinity);
+          setNormalized("Infinity");
+          setHexRepresentation(binary64ToHexadecimal(infinity));
+          setExponent(0);
+          return;
+        } else if (base10 < -52) {
+          //Denormalized number
+          const signBit = decimal.charAt(0) === "-" ? "1" : "0";
+          const denormalized = signBit + "00000000000" + "0".padEnd(52, "0");
+          setBinary64(denormalized);
+          setNormalized("Denormalized");
+          setHexRepresentation(binary64ToHexadecimal(denormalized));
+          setExponent(0);
+          return;
+        }
         const output: ConversionOutput = decimalInputToBinary64(
           decimal,
           base10,
